@@ -4,21 +4,45 @@
 
 package frc.libzodiac;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.libzodiac.util.Vec2D;
 
+/**
+ * A highly implemented class for hopefully all types of swerve control.
+ */
 public abstract class Zwerve extends SubsystemBase {
 
+  /**
+   * The length of the bot.
+   * <p>
+   * Units are not that important since the program only uses the ratio of length
+   * and width.
+   */
   private final double length;
+
+  /**
+   * The width of the bot.
+   * <p>
+   * Units are not that important since the program only uses the ratio of length
+   * and width.
+   */
   private final double width;
 
+  /**
+   * Method to calculate the radius of the rectangular robot.
+   */
   private double radius() {
     return Math.hypot(this.length, this.width) / 2;
   }
 
+  /**
+   * Modifier timed at the output speed of the chassis.
+   */
   public double output = 1;
 
+  /**
+   * Defines one swerve module.
+   */
   public static interface Module {
 
     public Module init();
@@ -28,6 +52,10 @@ public abstract class Zwerve extends SubsystemBase {
   }
 
   /**
+   * Swerve modules of a rectangular chassis.
+   * <p>
+   * Suppose the robot heads the positive x direction,
+   * relationship between indice and positions of modules are as follows:
    * <table>
    * <thead>
    * <tr>
@@ -54,38 +82,12 @@ public abstract class Zwerve extends SubsystemBase {
    * </tbody>
    * </table>
    */
-  protected final Module[] module;
+  public final Module[] module;
 
   /**
    * Creates a new Zwerve.
    * 
-   * For modules:
-   * <table>
-   * <thead>
-   * <tr>
-   * <th>Galaxy</th>
-   * <th>Index</th>
-   * </tr>
-   * </thead><tbody>
-   * <tr>
-   * <td>I</td>
-   * <td>0</td>
-   * </tr>
-   * <tr>
-   * <td>II</td>
-   * <td>1</td>
-   * </tr>
-   * <tr>
-   * <td>III</td>
-   * <td>2</td>
-   * </tr>
-   * <tr>
-   * <td>IV</td>
-   * <td>3</td>
-   * </tr>
-   * </tbody>
-   * </table>
-   * suppose the robot heads positive x direction.
+   * @param modules See <code>Zwerve.module</code>
    */
   public Zwerve(Module[] modules, double length, double width) {
     this.module = modules;
@@ -93,6 +95,9 @@ public abstract class Zwerve extends SubsystemBase {
     this.width = width;
   }
 
+  /**
+   * Initialize all modules.
+   */
   public Zwerve init() {
     for (Module i : this.module) {
       i.init();
@@ -105,6 +110,9 @@ public abstract class Zwerve extends SubsystemBase {
    */
   public abstract Zwerve init_opt();
 
+  /**
+   * Kinematics part from 6941.
+   */
   public Zwerve go_previous(Vec2D velocity, double omega) {
     var x = velocity.x;
     var y = velocity.y;
@@ -133,6 +141,9 @@ public abstract class Zwerve extends SubsystemBase {
     return this;
   }
 
+  /**
+   * Kinematics part rewritten using vector calculations.
+   */
   public Zwerve go(Vec2D velocity, double omega) {
     var l = this.length / 2;
     var w = this.width / 2;
@@ -159,11 +170,24 @@ public abstract class Zwerve extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
+  /**
+   * The driving <code>Command</code> for the chassis.
+   */
   public static class Drive extends ZCommand {
 
+    /**
+     * The chassis.
+     */
     private final Zwerve chassis;
+    /**
+     * The joystick that controls translation.
+     */
     private final Zoystick vel_ctrl;
-    private final Joystick rot_ctrl;
+
+    /**
+     * The joystick that controls rotation.
+     */
+    private final Zoystick rot_ctrl;
 
     private boolean inv_vx = false;
     private boolean inv_vy = false;
@@ -214,6 +238,9 @@ public abstract class Zwerve extends SubsystemBase {
       return false;
     }
 
+    /**
+     * Configure whether to invert the output of the chassis.
+     */
     public Drive inv(boolean vx, boolean vy, boolean rot) {
       this.inv_vx = vx;
       this.inv_vy = vy;
@@ -222,6 +249,9 @@ public abstract class Zwerve extends SubsystemBase {
     }
   }
 
+  /**
+   * Get the controlling <code>Command</code> for the current instance.
+   */
   public Drive control(Zoystick vel, Zoystick rot) {
     return new Drive(this, vel, rot);
   }

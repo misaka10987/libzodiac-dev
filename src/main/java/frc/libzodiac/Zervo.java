@@ -5,10 +5,19 @@ package frc.libzodiac;
  */
 public interface Zervo {
 
+    /**
+     * Configures the zero position of the motor.
+     */
     public Zervo set_zero(double zero);
 
+    /**
+     * Gets the zero position of the motor.
+     */
     public double get_zero();
 
+    /**
+     * Gets the current position.
+     */
     public double get_pos();
 
     /**

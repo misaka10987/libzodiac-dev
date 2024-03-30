@@ -1,8 +1,8 @@
-package frc.libzodiac.hwgrp;
+package frc.libzodiac.hardware.group;
 
 import frc.libzodiac.Util;
 import frc.libzodiac.Zwerve.Module;
-import frc.libzodiac.hw.Falcon;
+import frc.libzodiac.hardware.Falcon;
 import frc.libzodiac.util.Vec2D;
 
 public class FalconSwerve implements Module {

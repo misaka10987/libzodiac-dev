@@ -1,4 +1,4 @@
-package frc.libzodiac.hw;
+package frc.libzodiac.hardware;
 
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;

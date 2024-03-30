@@ -1,4 +1,4 @@
-package frc.libzodiac.hw;
+package frc.libzodiac.hardware;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;

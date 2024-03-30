@@ -24,7 +24,7 @@ public class Util {
      * THe definition here:
      * <p>
      * a and b are congruent modulo c, if and only if (a-b)/c is integer.
-     * 
+     *
      * @return In (-mod,mod), and NaN for NaN and Infinite parameters.
      */
     public static double mod(Double num, double mod) {

@@ -20,7 +20,7 @@ public class Falcon extends ZMotor {
     }
 
     @Override
-    public ZMotor init() {
+    public Falcon init() {
         this.motor = new TalonFX(this.can_id);
         this.motor
                 .getConfigurator()
@@ -30,7 +30,7 @@ public class Falcon extends ZMotor {
     }
 
     @Override
-    public ZMotor apply_pid() {
+    public Falcon apply_pid() {
         this.motor
                 .getConfigurator()
                 .apply(new Slot0Configs()
@@ -41,25 +41,25 @@ public class Falcon extends ZMotor {
     }
 
     @Override
-    public ZMotor shutdown() {
+    public Falcon shutdown() {
         this.motor.stopMotor();
         return this;
     }
 
     @Override
-    public ZMotor stop() {
+    public Falcon stop() {
         this.motor.stopMotor();
         return this;
     }
 
     @Override
-    public ZMotor go(String profile) {
+    public Falcon go(String profile) {
         this.motor.setControl(new VelocityDutyCycle(this.profile(profile)));
         return this;
     }
 
     @Override
-    public ZMotor go(double raw_unit) {
+    public Falcon go(double raw_unit) {
         this.motor.set(raw_unit);
         return this;
     }
@@ -101,7 +101,7 @@ public class Falcon extends ZMotor {
         }
 
         @Override
-        public ZMotor motor() {
+        public Falcon motor() {
             return this;
         }
 

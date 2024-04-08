@@ -5,22 +5,25 @@
 package frc.robot.subsystems;
 
 import frc.libzodiac.Zwerve;
+import frc.libzodiac.hardware.Pigeon;
 import frc.libzodiac.hardware.group.FalconSwerve;
 
 public class Chassis extends Zwerve {
 
-    protected static FalconSwerve[] mods = {
+    protected static final FalconSwerve[] mods = {
             new FalconSwerve(1, 2),
             new FalconSwerve(3, 4),
             new FalconSwerve(5, 6),
             new FalconSwerve(7, 8),
     };
 
+    protected static final Pigeon gyro = new Pigeon(0);
+
     /**
      * Creates a new Chassis.
      */
     public Chassis() {
-        super(mods, 114, 114);
+        super(mods, gyro, 114, 114);
         // Mod I.
         mods[0].speed_motor.set_pid(0, 0, 0);
         mods[0].angle_motor.set_pid(0, 0, 0);

@@ -35,10 +35,33 @@ public abstract class Zwerve extends SubsystemBase {
         return Math.hypot(this.length, this.width) / 2;
     }
 
+    public boolean headless = false;
+
+    /**
+     * Zero direction of the gyro.
+     */
+    public double dir_zero = 0;
+
+    /**
+     * Get the absolute current direction of the robot.j
+     */
+    public double dir_curr() {
+        return this.gyro.get_yaw() - this.dir_zero;
+    }
+
+    /**
+     * Get the direction adjustment applied under headless mode.
+     */
+    private double dir_fix() {
+        return this.headless ? this.dir_curr() : 0;
+    }
+
     /**
      * Modifier timed at the output speed of the chassis.
      */
     public double output = 1;
+
+    public final ZGyro gyro;
 
     /**
      * Defines one swerve module.
@@ -89,8 +112,9 @@ public abstract class Zwerve extends SubsystemBase {
      *
      * @param modules See <code>Zwerve.module</code>
      */
-    public Zwerve(Module[] modules, double length, double width) {
+    public Zwerve(Module[] modules, ZGyro gyro, double length, double width) {
         this.module = modules;
+        this.gyro = gyro;
         this.length = length;
         this.width = width;
     }
@@ -160,13 +184,29 @@ public abstract class Zwerve extends SubsystemBase {
             for (var i : v)
                 i = i.div(max);
         for (int i = 0; i < 4; i++)
-            this.module[i].go(v[i].mul(output));
+            this.module[i].go(v[i].mul(output).rot(-this.dir_fix()));
         return this;
     }
 
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
+    }
+
+    /**
+     * Enable headless mode.
+     */
+    public Zwerve headless() {
+        this.headless = true;
+        return this;
+    }
+
+    /**
+     * Enable/disable headless mode.
+     */
+    public Zwerve headless(boolean status) {
+        this.headless = status;
+        return this;
     }
 
     /**

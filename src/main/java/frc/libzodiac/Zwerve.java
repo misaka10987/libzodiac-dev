@@ -53,7 +53,9 @@ public abstract class Zwerve extends SubsystemBase {
      * Get the direction adjustment applied under headless mode.
      */
     private double dir_fix() {
-        return this.headless ? this.dir_curr() : 0;
+        if (this.gyro == null)
+            return 0;
+        return this.headless ? -this.dir_curr() : 0;
     }
 
     /**
@@ -61,6 +63,9 @@ public abstract class Zwerve extends SubsystemBase {
      */
     public double output = 1;
 
+    /**
+     * Gyro.
+     */
     public final ZGyro gyro;
 
     /**
@@ -126,13 +131,13 @@ public abstract class Zwerve extends SubsystemBase {
         for (Module i : this.module) {
             i.init();
         }
-        return this;
+        return this.opt_init();
     }
 
     /**
      * Optional initializations you would like to automatically invoke.
      */
-    public abstract Zwerve init_opt();
+    protected abstract Zwerve opt_init();
 
     /**
      * Kinematics part from 6941.
@@ -184,7 +189,7 @@ public abstract class Zwerve extends SubsystemBase {
             for (var i : v)
                 i = i.div(max);
         for (int i = 0; i < 4; i++)
-            this.module[i].go(v[i].mul(output).rot(-this.dir_fix()));
+            this.module[i].go(v[i].mul(output).rot(this.dir_fix()));
         return this;
     }
 

@@ -10,14 +10,14 @@ import frc.libzodiac.hardware.group.FalconSwerve;
 
 public class Chassis extends Zwerve {
 
-    protected static final FalconSwerve[] mods = {
+    private static final FalconSwerve[] mods = {
             new FalconSwerve(1, 2),
             new FalconSwerve(3, 4),
             new FalconSwerve(5, 6),
             new FalconSwerve(7, 8),
     };
 
-    protected static final Pigeon gyro = new Pigeon(0);
+    private static final Pigeon gyro = new Pigeon(0);
 
     /**
      * Creates a new Chassis.
@@ -48,7 +48,8 @@ public class Chassis extends Zwerve {
     }
 
     @Override
-    public Zwerve init_opt() {
+    protected Zwerve opt_init() {
+        super.gyro.zero = 0;
         return this;
     }
 }

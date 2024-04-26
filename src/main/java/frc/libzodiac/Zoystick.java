@@ -22,7 +22,13 @@ public class Zoystick extends Joystick {
      */
     public HashSet<Integer> inv;
 
+    /**
+     * Whether to invert x axis.
+     */
     public boolean inv_x = false;
+    /**
+     * Whether to invert y axis.
+     */
     public boolean inv_y = false;
 
     /**
@@ -117,8 +123,15 @@ public class Zoystick extends Joystick {
         return this.getRawButtonReleased(this.key_map.get(button));
     }
 
+    /**
+     * Filters the input value as a parabola, e.g. -0.5 -> -0.25.
+     */
     public static final Function<Double, Double> quad_filter = (x) -> x / Math.abs(x) * x * x;
 
+    /**
+     * Filters the input value with a threshold, inputs with absolute values less
+     * than it will be ignored.
+     */
     public static final Function<Double, Double> thre_filter(double thre) {
         Function<Double, Double> lambda = (x) -> {
             if (Math.abs(x) > thre) {

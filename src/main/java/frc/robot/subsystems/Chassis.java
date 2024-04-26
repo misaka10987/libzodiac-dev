@@ -49,7 +49,7 @@ public class Chassis extends Zwerve {
 
     @Override
     protected Zwerve opt_init() {
-        super.gyro.zero = 0;
+        super.gyro.zero_yaw = 0;
         return this;
     }
 }

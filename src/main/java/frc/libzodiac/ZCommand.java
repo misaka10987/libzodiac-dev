@@ -7,9 +7,16 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
  * Not that necessary.
  * It is here just to improve coding experience.
  */
-public class ZCommand extends Command {
+public abstract class ZCommand extends Command {
     protected <T extends Subsystem> T require(T subsys) {
-        this.addRequirements(subsys);
+        super.addRequirements(subsys);
         return subsys;
+    }
+
+    protected abstract ZCommand exec();
+
+    @Override
+    public void execute() {
+        this.exec();
     }
 }

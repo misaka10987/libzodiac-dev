@@ -2,6 +2,7 @@ package frc.libzodiac;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.function.Function;
 
 import edu.wpi.first.wpilibj.Joystick;
 
@@ -25,9 +26,9 @@ public class Zoystick extends Joystick {
     public boolean inv_y = false;
 
     /**
-     * Threshold for axis values to filter minor errors.
+     * Function to pre-process the input value of joystick.
      */
-    public double axis_thre = 0;
+    public Function<Double, Double> filter_fn = (x) -> x;
 
     public Zoystick(int port) {
         super(port);
@@ -52,22 +53,10 @@ public class Zoystick extends Joystick {
     }
 
     /**
-     * The joystick threshold.
-     * <p>
-     * Input less than this value will be ignored.
-     */
-    public Zoystick thre(double th) {
-        this.axis_thre = th;
-        return this;
-    }
-
-    /**
      * Get the filtered input of an axis.
      */
     public double axis(int axis) {
-        var a = this.getRawAxis(axis);
-        if (Math.abs(a) < this.axis_thre)
-            return 0;
+        var a = this.filter_fn.apply(this.getRawAxis(axis));
         if (this.inv.contains(axis))
             a = -a;
         return a;
@@ -85,6 +74,14 @@ public class Zoystick extends Joystick {
      */
     public double y() {
         return this.axis(1);
+    }
+
+    /**
+     * Set the input filter function.
+     */
+    public Zoystick with_filter(Function<Double, Double> f) {
+        this.filter_fn = f;
+        return this;
     }
 
     /**
@@ -118,5 +115,17 @@ public class Zoystick extends Joystick {
      */
     public boolean button_released(String button) {
         return this.getRawButtonReleased(this.key_map.get(button));
+    }
+
+    public static final Function<Double, Double> quad_filter = (x) -> x / Math.abs(x) * x * x;
+
+    public static final Function<Double, Double> thre_filter(double thre) {
+        Function<Double, Double> lambda = (x) -> {
+            if (Math.abs(x) > thre) {
+                return x;
+            }
+            return 0.0;
+        };
+        return lambda;
     }
 }

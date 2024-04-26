@@ -254,7 +254,7 @@ public abstract class Zwerve extends SubsystemBase {
 
         // Called every time the scheduler runs while the command is scheduled.
         @Override
-        public void execute() {
+        protected Drive exec() {
             var v_x = this.vel_ctrl.x();
             var v_y = this.vel_ctrl.y();
             var omega = this.rot_ctrl.getRawAxis(0);
@@ -271,6 +271,7 @@ public abstract class Zwerve extends SubsystemBase {
             if (omega < 1e-3)
                 omega = 0;
             this.chassis.go(new Vec2D(v_x, v_y), omega);
+            return this;
         }
 
         // Called once the command ends or is interrupted.
@@ -287,9 +288,9 @@ public abstract class Zwerve extends SubsystemBase {
         /**
          * Configure whether to invert the output of the chassis.
          */
-        public Drive inv(boolean vx, boolean vy, boolean rot) {
-            this.inv_vx = vx;
-            this.inv_vy = vy;
+        public Drive inv(boolean v_x, boolean v_y, boolean rot) {
+            this.inv_vx = v_x;
+            this.inv_vy = v_y;
             this.inv_rot = rot;
             return this;
         }

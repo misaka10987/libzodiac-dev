@@ -44,7 +44,7 @@ public class TalonSRXMotor extends ZMotor {
 
     @Override
     public ZMotor go(String profile) {
-        this.motor.set(ControlMode.Velocity, this.profile(profile));
+        this.motor.set(ControlMode.Velocity, this.profile.get(profile));
         return this;
     }
 
@@ -80,7 +80,7 @@ public class TalonSRXMotor extends ZMotor {
 
         @Override
         public Servo go(String profile) {
-            this.motor.set(ControlMode.Position, this.profile(profile));
+            this.motor.set(ControlMode.Position, this.profile.get(profile));
             return this;
         }
 

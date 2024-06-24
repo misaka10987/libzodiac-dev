@@ -21,7 +21,7 @@ public class Util {
     /**
      * Extends the modulo operation to R.
      * <p>
-     * THe definition here:
+     * The definition here:
      * <p>
      * a and b are congruent modulo c, if and only if (a-b)/c is integer.
      *

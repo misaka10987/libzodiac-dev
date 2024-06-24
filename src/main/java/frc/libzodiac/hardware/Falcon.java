@@ -3,9 +3,10 @@ package frc.libzodiac.hardware;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
+import com.ctre.phoenix6.controls.StaticBrake;
 import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
-
+import frc.libzodiac.Constant;
 import frc.libzodiac.ZMotor;
 import frc.libzodiac.Zervo;
 
@@ -48,13 +49,13 @@ public class Falcon extends ZMotor {
 
     @Override
     public Falcon stop() {
-        this.motor.stopMotor();
+        this.motor.setControl(new StaticBrake());
         return this;
     }
 
     @Override
     public Falcon go(String profile) {
-        this.motor.setControl(new VelocityDutyCycle(this.profile(profile)));
+        this.motor.setControl(new VelocityDutyCycle(this.profile.get(profile)));
         return this;
     }
 
@@ -66,6 +67,9 @@ public class Falcon extends ZMotor {
 
     public static class Servo extends Falcon implements Zervo {
 
+        /**
+         * Zero position applied to adjust output value of Falcon's builtin encoder.
+         */
         protected double zero = 0;
 
         public Servo(int can_id) {
@@ -74,13 +78,13 @@ public class Falcon extends ZMotor {
 
         @Override
         public Servo go(String profile) {
-            this.motor.setControl(new PositionDutyCycle(this.profile(profile)));
+            this.motor.setControl(new PositionDutyCycle(this.profile.get(profile)));
             return this;
         }
 
         @Override
-        public Servo go(double rad) {
-            this.motor.setControl(new PositionDutyCycle(rad / 2 / Math.PI));
+        public Servo go(double angle) {
+            this.motor.setControl(new PositionDutyCycle((angle - this.zero) / Constant.FALCON_POSITION_UNIT));
             return this;
         }
 
@@ -97,7 +101,7 @@ public class Falcon extends ZMotor {
 
         @Override
         public double get_pos() {
-            return this.motor.getPosition().getValue() * 2 * Math.PI - this.zero;
+            return this.motor.getPosition().refresh().getValue() * Constant.FALCON_POSITION_UNIT - this.zero;
         }
 
         @Override

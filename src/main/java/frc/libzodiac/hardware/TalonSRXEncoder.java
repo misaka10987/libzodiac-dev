@@ -1,10 +1,11 @@
 package frc.libzodiac.hardware;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
+import frc.libzodiac.Constant;
 import frc.libzodiac.ZEncoder;
 
 public class TalonSRXEncoder extends ZEncoder {
+
     public TalonSRXEncoder(int can_id) {
         super(can_id);
     }
@@ -23,9 +24,8 @@ public class TalonSRXEncoder extends ZEncoder {
     }
 
     @Override
-    public double get() {
-        // TODO
-        return this.get_raw();
+    public double get_rad() {
+        return this.get_raw() / Constant.TALONSRX_ENCODER_UNIT;
     }
 
 }

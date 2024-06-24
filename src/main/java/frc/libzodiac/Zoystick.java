@@ -69,14 +69,14 @@ public class Zoystick extends Joystick {
     }
 
     /**
-     * Gets the x axis of the joystick.
+     * Gets the x-axis of the joystick.
      */
     public double x() {
         return this.axis(0);
     }
 
     /**
-     * Gets the y axis of the joystick.
+     * Gets the y-axis of the joystick.
      */
     public double y() {
         return this.axis(1);
@@ -85,7 +85,7 @@ public class Zoystick extends Joystick {
     /**
      * Set the input filter function.
      */
-    public Zoystick with_filter(Function<Double, Double> f) {
+    public Zoystick set_filter(Function<Double, Double> f) {
         this.filter_fn = f;
         return this;
     }

@@ -32,11 +32,11 @@ public class RobotContainer {
     public Zoystick drive = new Zoystick(0)
             .map(0, "X")
             .map(1, "Y")
-            .with_filter(Zoystick.quad_filter);
+            .set_filter(Zoystick.quad_filter);
     public Zoystick ctrl = new Zoystick(1)
             .map(0, "X")
             .map(1, "Y")
-            .with_filter(Zoystick.thre_filter(0.1));
+            .set_filter(Zoystick.thre_filter(0.1));
 
     public RobotContainer init() {
         chassis.init();

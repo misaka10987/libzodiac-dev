@@ -21,17 +21,17 @@ public class Pigeon extends ZGyro {
 
     @Override
     protected double get_yaw() {
-        return Util.rad(this.gyro.getYaw().getValue());
+        return Util.rad(this.gyro.getYaw().refresh().getValue());
     }
 
     @Override
     protected double get_pitch() {
-        return Util.rad(this.gyro.getPitch().getValue());
+        return Util.rad(this.gyro.getPitch().refresh().getValue());
     }
 
     @Override
     protected double get_roll() {
-        return Util.rad(this.gyro.getRoll().getValue());
+        return Util.rad(this.gyro.getRoll().refresh().getValue());
     }
 
 }

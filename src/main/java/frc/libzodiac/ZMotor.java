@@ -1,8 +1,9 @@
 package frc.libzodiac;
 
-import java.util.HashMap;
-
 import frc.libzodiac.util.PIDProfile;
+
+import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * Defines a large collection of APIs to operate various motors so that motors
@@ -21,18 +22,6 @@ public abstract class ZMotor {
     public HashMap<String, Double> profile;
 
     /**
-     * Gets the value of the specified motion profile.
-     */
-    protected double profile(String name) {
-        var opt = this.profile.get(name);
-        if (opt == null) {
-            return 0;
-        } else {
-            return opt;
-        }
-    }
-
-    /**
      * Initialize this motor, e.g. binds to the CAN bus.
      */
     public abstract ZMotor init();
@@ -45,10 +34,12 @@ public abstract class ZMotor {
     /**
      * Set PID parameters.
      */
-    public ZMotor set_pid(PIDProfile pid) {
+    public final ZMotor set_pid(PIDProfile pid) {
         this.pid = pid;
         return this.apply_pid();
-    };
+    }
+
+    ;
 
     /**
      * Set PID parameters.
@@ -75,7 +66,7 @@ public abstract class ZMotor {
 
     /**
      * Set the output.
-     * 
+     *
      * @param raw_unit Usually speed output percentage in [-1,1] for generic motors
      *                 and desired angle positions in rads for servos.
      */

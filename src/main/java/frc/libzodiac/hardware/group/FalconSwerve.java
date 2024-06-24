@@ -7,11 +7,11 @@ import frc.libzodiac.util.Vec2D;
 
 public class FalconSwerve implements Module {
     public final Falcon speed_motor;
-    public final Falcon.Servo angle_motor;
+    public final FalconWithEncoder angle_motor;
 
-    public FalconSwerve(int speed_motor_id, int angle_motor_id) {
-        this.speed_motor = new Falcon(speed_motor_id);
-        this.angle_motor = new Falcon.Servo(angle_motor_id);
+    public FalconSwerve(Falcon speed_motor, FalconWithEncoder angle_motor) {
+        this.speed_motor = speed_motor;
+        this.angle_motor = angle_motor;
     }
 
     @Override

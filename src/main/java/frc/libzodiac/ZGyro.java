@@ -1,7 +1,7 @@
 package frc.libzodiac;
 
 public abstract class ZGyro {
-    protected final int can_id;
+    public final int can_id;
 
     /**
      * Zero position in raw sensor units.

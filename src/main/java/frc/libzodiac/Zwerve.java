@@ -12,27 +12,13 @@ import frc.libzodiac.util.Vec2D;
  */
 public abstract class Zwerve extends SubsystemBase {
 
-    /**
-     * The length of the bot.
-     * <p>
-     * Units are not that important since the program only uses the ratio of length
-     * and width.
-     */
-    private final double length;
-
-    /**
-     * The width of the bot.
-     * <p>
-     * Units are not that important since the program only uses the ratio of length
-     * and width.
-     */
-    private final double width;
+    public final Vec2D shape;
 
     /**
      * Method to calculate the radius of the rectangular robot.
      */
     private double radius() {
-        return Math.hypot(this.length, this.width) / 2;
+        return this.shape.div(2).r();
     }
 
     public boolean headless = false;
@@ -115,13 +101,14 @@ public abstract class Zwerve extends SubsystemBase {
     /**
      * Creates a new Zwerve.
      *
-     * @param modules See <code>Zwerve.module</code>
+     * @param modules See <code>Zwerve.module</code>.
+     * @param gyro    The gyro.
+     * @param shape   Shape of the robot, <code>x</code> for length and <code>y</code> for width.
      */
-    public Zwerve(Module[] modules, ZGyro gyro, double length, double width) {
+    public Zwerve(Module[] modules, ZGyro gyro, Vec2D shape) {
         this.module = modules;
         this.gyro = gyro;
-        this.length = length;
-        this.width = width;
+        this.shape = shape;
     }
 
     /**
@@ -142,11 +129,12 @@ public abstract class Zwerve extends SubsystemBase {
     /**
      * Kinematics part from 6941.
      */
+    @Deprecated
     public Zwerve go_previous(Vec2D velocity, double omega) {
         var x = velocity.x;
         var y = velocity.y;
-        var l = this.length;
-        var w = this.width;
+        var l = this.shape.x;
+        var w = this.shape.y;
         var r = this.radius();
         var a = y - omega * l / r;
         var b = y + omega * l / r;
@@ -174,8 +162,8 @@ public abstract class Zwerve extends SubsystemBase {
      * Kinematics part rewritten using vector calculations.
      */
     public Zwerve go(Vec2D velocity, double omega) {
-        var l = this.length / 2;
-        var w = this.width / 2;
+        var l = this.shape.x / 2;
+        var w = this.shape.y / 2;
         var pi2 = Math.PI / 2;
         var vt = omega * this.radius();
         Vec2D[] v = {
@@ -184,10 +172,8 @@ public abstract class Zwerve extends SubsystemBase {
                 new Vec2D(-l, -w).rot(pi2).with_r(vt).add(velocity),
                 new Vec2D(l, -w).rot(pi2).with_r(vt).add(velocity),
         };
-        var max = v[1].max(v[2]).max(v[3]).max(v[4]).r();
-        if (max > 1)
-            for (var i : v)
-                i = i.div(max);
+        var max = v[0].max(v[1]).max(v[2]).max(v[3]).r();
+        if (max > 1) for (int i = 0; i < 4; i++) v[i] = v[i].div(max);
         for (int i = 0; i < 4; i++)
             this.module[i].go(v[i].mul(output).rot(this.dir_fix()));
         return this;
@@ -264,12 +250,6 @@ public abstract class Zwerve extends SubsystemBase {
                 v_y = -v_y;
             if (this.inv_rot)
                 omega = -omega;
-            if (v_x < 1e-3)
-                v_x = 0;
-            if (v_y < 1e-3)
-                v_y = 0;
-            if (omega < 1e-3)
-                omega = 0;
             this.chassis.go(new Vec2D(v_x, v_y), omega);
             return this;
         }
@@ -302,4 +282,5 @@ public abstract class Zwerve extends SubsystemBase {
     public Drive control(Zoystick vel, Zoystick rot) {
         return new Drive(this, vel, rot);
     }
+
 }

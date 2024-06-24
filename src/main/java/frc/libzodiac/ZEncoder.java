@@ -11,9 +11,9 @@ public abstract class ZEncoder {
     public final int can_id;
 
     /**
-     * Zero position of this encoder in raw units.
+     * Zero position of this encoder in radians. The adjustion is applied to output automatically by <code>ZEncoder</code>.
      */
-    public double zero_pos;
+    public double zero;
 
     public ZEncoder(int can_id) {
         this.can_id = can_id;
@@ -28,7 +28,7 @@ public abstract class ZEncoder {
      * Configures the zero position of the encoder.
      */
     public ZEncoder set_zero(double pos) {
-        this.zero_pos = pos;
+        this.zero = pos;
         return this;
     }
 
@@ -38,7 +38,14 @@ public abstract class ZEncoder {
     public abstract double get_raw();
 
     /**
+     * Get the current position in radians, regardless of zero position.
+     */
+    public abstract double get_rad();
+
+    /**
      * Get the current position.
      */
-    public abstract double get();
+    public double get() {
+        return this.get_rad() - this.zero;
+    }
 }

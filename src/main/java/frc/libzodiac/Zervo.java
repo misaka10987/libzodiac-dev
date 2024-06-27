@@ -18,7 +18,7 @@ public interface Zervo {
     /**
      * Gets the current position.
      */
-    public double get_pos();
+    public double get();
 
     /**
      * Convaries the servo motor and returns a generic motor.

@@ -3,7 +3,7 @@ package frc.libzodiac;
 /**
  * A generic encoder.
  */
-public abstract class ZEncoder {
+public abstract class ZEncoder implements ZmartDash {
 
     /**
      * The CAN ID.
@@ -47,5 +47,10 @@ public abstract class ZEncoder {
      */
     public double get() {
         return this.get_rad() - this.zero;
+    }
+
+    @Override
+    public String key() {
+        return "ZEncoder(" + this.can_id + ")";
     }
 }

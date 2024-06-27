@@ -2,7 +2,6 @@ package frc.libzodiac.hardware;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
 import frc.libzodiac.ZMotor;
 import frc.libzodiac.Zervo;
 
@@ -17,14 +16,14 @@ public class TalonSRXMotor extends ZMotor {
     }
 
     @Override
-    public ZMotor init() {
+    public TalonSRXMotor bind_can() {
         this.motor = new TalonSRX(this.can_id);
         this.motor.configFactoryDefault();
         return this;
     }
 
     @Override
-    public ZMotor apply_pid() {
+    public TalonSRXMotor apply_pid() {
         this.motor.config_kP(0, this.pid.k_p);
         this.motor.config_kI(0, this.pid.k_i);
         this.motor.config_kD(0, this.pid.k_d);
@@ -32,24 +31,29 @@ public class TalonSRXMotor extends ZMotor {
     }
 
     @Override
-    public ZMotor shutdown() {
+    protected TalonSRXMotor opt_init() {
+        return this;
+    }
+
+    @Override
+    public TalonSRXMotor shutdown() {
         this.motor.set(ControlMode.Disabled, 0);
         return this;
     }
 
     @Override
-    public ZMotor stop() {
+    public TalonSRXMotor stop() {
         return this.shutdown();
     }
 
     @Override
-    public ZMotor go(String profile) {
+    public TalonSRXMotor go(String profile) {
         this.motor.set(ControlMode.Velocity, this.profile.get(profile));
         return this;
     }
 
     @Override
-    public ZMotor go(double raw_unit) {
+    public TalonSRXMotor go(double raw_unit) {
         this.motor.set(ControlMode.Velocity, raw_unit);
         return this;
     }
@@ -74,7 +78,7 @@ public class TalonSRXMotor extends ZMotor {
         }
 
         @Override
-        public double get_pos() {
+        public double get() {
             return this.motor.getSelectedSensorPosition();
         }
 
@@ -91,7 +95,7 @@ public class TalonSRXMotor extends ZMotor {
         }
 
         @Override
-        public ZMotor motor() {
+        public TalonSRXMotor motor() {
             return this;
         }
 

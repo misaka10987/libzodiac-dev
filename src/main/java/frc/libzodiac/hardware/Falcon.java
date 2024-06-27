@@ -1,6 +1,5 @@
 package frc.libzodiac.hardware;
 
-import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.controls.StaticBrake;
@@ -9,8 +8,9 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import frc.libzodiac.Constant;
 import frc.libzodiac.ZMotor;
 import frc.libzodiac.Zervo;
+import frc.libzodiac.ZmartDash;
 
-public class Falcon extends ZMotor {
+public class Falcon extends ZMotor implements ZmartDash {
 
     public final int can_id;
 
@@ -21,12 +21,8 @@ public class Falcon extends ZMotor {
     }
 
     @Override
-    public Falcon init() {
+    protected Falcon bind_can() {
         this.motor = new TalonFX(this.can_id);
-        this.motor
-                .getConfigurator()
-                .apply(new MotorOutputConfigs()
-                        .withPeakForwardDutyCycle(0.2));
         return this;
     }
 
@@ -38,6 +34,11 @@ public class Falcon extends ZMotor {
                         .withKP(this.pid.k_p)
                         .withKI(this.pid.k_i)
                         .withKD(this.pid.k_d));
+        return this;
+    }
+
+    @Override
+    protected Falcon opt_init() {
         return this;
     }
 
@@ -70,7 +71,7 @@ public class Falcon extends ZMotor {
         /**
          * Zero position applied to adjust output value of Falcon's builtin encoder.
          */
-        protected double zero = 0;
+        public double zero = 0;
 
         public Servo(int can_id) {
             super(can_id);
@@ -100,7 +101,7 @@ public class Falcon extends ZMotor {
         }
 
         @Override
-        public double get_pos() {
+        public double get() {
             return this.motor.getPosition().refresh().getValue() * Constant.FALCON_POSITION_UNIT - this.zero;
         }
 
@@ -109,5 +110,14 @@ public class Falcon extends ZMotor {
             return this;
         }
 
+        @Override
+        public String key() {
+            return "Falcon.Servo(" + this.can_id + ")";
+        }
+    }
+
+    @Override
+    public String key() {
+        return "Falcon(" + this.can_id + ")";
     }
 }

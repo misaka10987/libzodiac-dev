@@ -10,6 +10,11 @@ public class Vec2D {
         this.y = y;
     }
 
+    @Override
+    public String toString() {
+        return "(" + this.x + "," + this.y + ")";
+    }
+
     public Vec2D with_x(double x) {
         return new Vec2D(x, this.y);
     }

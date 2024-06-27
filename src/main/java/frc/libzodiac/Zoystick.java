@@ -23,11 +23,11 @@ public class Zoystick extends Joystick {
     public HashSet<Integer> inv;
 
     /**
-     * Whether to invert x axis.
+     * Whether to invert x-axis.
      */
     public boolean inv_x = false;
     /**
-     * Whether to invert y axis.
+     * Whether to invert y-axis.
      */
     public boolean inv_y = false;
 
@@ -132,7 +132,7 @@ public class Zoystick extends Joystick {
      * Filters the input value with a threshold, inputs with absolute values less
      * than it will be ignored.
      */
-    public static final Function<Double, Double> thre_filter(double thre) {
+    public static Function<Double, Double> thre_filter(double thre) {
         Function<Double, Double> lambda = (x) -> {
             if (Math.abs(x) > thre) {
                 return x;

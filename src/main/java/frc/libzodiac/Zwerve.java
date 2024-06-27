@@ -10,7 +10,7 @@ import frc.libzodiac.util.Vec2D;
 /**
  * A highly implemented class for hopefully all types of swerve control.
  */
-public abstract class Zwerve extends SubsystemBase {
+public abstract class Zwerve extends SubsystemBase implements ZmartDash {
 
     public final Vec2D shape;
 
@@ -283,4 +283,12 @@ public abstract class Zwerve extends SubsystemBase {
         return new Drive(this, vel, rot);
     }
 
+    public ZCommand drive_forward() {
+        return new ZLambda<Zwerve>((x) -> x.go(new Vec2D(0.1, 0), 0), this);
+    }
+
+    @Override
+    public String key() {
+        return "Zwerve";
+    }
 }

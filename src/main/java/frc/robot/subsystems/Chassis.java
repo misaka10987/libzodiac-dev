@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import frc.libzodiac.Constant;
 import frc.libzodiac.ZEncoder;
 import frc.libzodiac.Zwerve;
 import frc.libzodiac.hardware.Falcon;
@@ -11,36 +12,44 @@ import frc.libzodiac.hardware.Pigeon;
 import frc.libzodiac.hardware.TalonSRXEncoder;
 import frc.libzodiac.hardware.group.FalconSwerve;
 import frc.libzodiac.hardware.group.FalconWithEncoder;
+import frc.libzodiac.util.PIDProfile;
 import frc.libzodiac.util.Vec2D;
 
 public class Chassis extends Zwerve {
 
-    public static final Falcon[] speed_motor = {
-            new Falcon(1),
-            new Falcon(2),
+    public static final Falcon[] speed = {
             new Falcon(3),
-            new Falcon(4)
+            new Falcon(8),
+            new Falcon(5),
+            new Falcon(10)
     };
 
-    public static final ZEncoder[] swervemod_encoder = {
-            new TalonSRXEncoder(9).set_zero(0),
-            new TalonSRXEncoder(10).set_zero(0),
-            new TalonSRXEncoder(11).set_zero(0),
-            new TalonSRXEncoder(12).set_zero(0),
+    public static final Falcon.Servo[] servo = {
+            new Falcon.Servo(2),
+            new Falcon.Servo(12),
+            new Falcon.Servo(6),
+            new Falcon.Servo(11),
     };
 
-    public static final FalconWithEncoder[] angle_motor = {
-            new FalconWithEncoder(5, swervemod_encoder[0]),
-            new FalconWithEncoder(6, swervemod_encoder[1]),
-            new FalconWithEncoder(7, swervemod_encoder[2]),
-            new FalconWithEncoder(8, swervemod_encoder[3]),
+    public static final ZEncoder[] encoder = {
+            new TalonSRXEncoder(1).set_zero(3603 / Constant.TALONSRX_ENCODER_UNIT),
+            new TalonSRXEncoder(7).set_zero(967 / Constant.TALONSRX_ENCODER_UNIT),
+            new TalonSRXEncoder(9).set_zero(170 / Constant.TALONSRX_ENCODER_UNIT),
+            new TalonSRXEncoder(4).set_zero(1487 / Constant.TALONSRX_ENCODER_UNIT),
+    };
+
+    public static final FalconWithEncoder[] angle = {
+            new FalconWithEncoder(servo[0], encoder[0]),
+            new FalconWithEncoder(servo[1], encoder[1]),
+            new FalconWithEncoder(servo[2], encoder[2]),
+            new FalconWithEncoder(servo[3], encoder[3]),
     };
 
     private static final FalconSwerve[] mods = {
-            new FalconSwerve(speed_motor[0], angle_motor[0]),
-            new FalconSwerve(speed_motor[1], angle_motor[1]),
-            new FalconSwerve(speed_motor[2], angle_motor[2]),
-            new FalconSwerve(speed_motor[3], angle_motor[3]),
+            new FalconSwerve(speed[0], angle[0]),
+            new FalconSwerve(speed[1], angle[1]),
+            new FalconSwerve(speed[2], angle[2]),
+            new FalconSwerve(speed[3], angle[3]),
     };
 
     private static final Pigeon gyro = new Pigeon(0);
@@ -50,22 +59,20 @@ public class Chassis extends Zwerve {
      */
     public Chassis() {
         super(mods, gyro, new Vec2D(114, 114));
+        var v = new PIDProfile(0.15, 0, 0);
+        var a = new PIDProfile(0.05, 0.001, 0);
         // Mod I.
-        mods[0].speed_motor.set_pid(0, 0, 0);
-        mods[0].angle_motor.set_pid(0, 0, 0);
-        mods[0].angle_motor.set_zero(0);
+        mods[0].speed_motor.set_pid(v);
+        mods[0].angle_motor.set_pid(a);
         // Mod II.
-        mods[1].speed_motor.set_pid(0, 0, 0);
-        mods[1].angle_motor.set_pid(0, 0, 0);
-        mods[1].angle_motor.set_zero(0);
+        mods[1].speed_motor.set_pid(v);
+        mods[1].angle_motor.set_pid(a);
         // Mod III.
-        mods[2].speed_motor.set_pid(0, 0, 0);
-        mods[2].angle_motor.set_pid(0, 0, 0);
-        mods[2].angle_motor.set_zero(0);
+        mods[2].speed_motor.set_pid(v);
+        mods[2].angle_motor.set_pid(a);
         // Mod IV.
-        mods[3].speed_motor.set_pid(0, 0, 0);
-        mods[3].angle_motor.set_pid(0, 0, 0);
-        mods[3].angle_motor.set_zero(0);
+        mods[3].speed_motor.set_pid(v);
+        mods[3].angle_motor.set_pid(a);
     }
 
     @Override

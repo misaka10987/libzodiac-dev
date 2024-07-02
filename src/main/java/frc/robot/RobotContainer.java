@@ -36,17 +36,17 @@ public class RobotContainer {
 //            .map(1, "Y")
 //            .set_filter(Zoystick.thre_filter(0.1));
 
-    public RobotContainer init() {
-        chassis.init();
-        return this;
-    }
-
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
         // Configure the trigger bindings
         configureBindings();
+    }
+
+    public RobotContainer init() {
+        chassis.init();
+        return this;
     }
 
     /**

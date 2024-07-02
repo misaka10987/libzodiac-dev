@@ -13,58 +13,10 @@ import frc.libzodiac.util.Vec2D;
 public abstract class Zwerve extends SubsystemBase implements ZmartDash {
 
     public final Vec2D shape;
-
-    /**
-     * Method to calculate the radius of the rectangular robot.
-     */
-    private double radius() {
-        return this.shape.div(2).r();
-    }
-
-    public boolean headless = false;
-
-    /**
-     * Zero direction of the gyro.
-     */
-    public double dir_zero = 0;
-
-    /**
-     * Get the absolute current direction of the robot.j
-     */
-    public double dir_curr() {
-        return this.gyro.get_yaw() - this.dir_zero;
-    }
-
-    /**
-     * Get the direction adjustment applied under headless mode.
-     */
-    private double dir_fix() {
-        if (this.gyro == null)
-            return 0;
-        return this.headless ? -this.dir_curr() : 0;
-    }
-
-    /**
-     * Modifier timed at the output speed of the chassis.
-     */
-    public double output = 1;
-
     /**
      * Gyro.
      */
     public final ZGyro gyro;
-
-    /**
-     * Defines one swerve module.
-     */
-    public static interface Module {
-
-        Module init();
-
-        Module go(Vec2D velocity);
-
-    }
-
     /**
      * Swerve modules of a rectangular chassis.
      * <p>
@@ -97,6 +49,15 @@ public abstract class Zwerve extends SubsystemBase implements ZmartDash {
      * </table>
      */
     public final Module[] module;
+    public boolean headless = false;
+    /**
+     * Zero direction of the gyro.
+     */
+    public double dir_zero = 0;
+    /**
+     * Modifier timed at the output speed of the chassis.
+     */
+    public double output = 1;
 
     /**
      * Creates a new Zwerve.
@@ -109,6 +70,29 @@ public abstract class Zwerve extends SubsystemBase implements ZmartDash {
         this.module = modules;
         this.gyro = gyro;
         this.shape = shape;
+    }
+
+    /**
+     * Method to calculate the radius of the rectangular robot.
+     */
+    private double radius() {
+        return this.shape.div(2).r();
+    }
+
+    /**
+     * Get the absolute current direction of the robot.j
+     */
+    public double dir_curr() {
+        return this.gyro.get_yaw() - this.dir_zero;
+    }
+
+    /**
+     * Get the direction adjustment applied under headless mode.
+     */
+    private double dir_fix() {
+        if (this.gyro == null)
+            return 0;
+        return this.headless ? -this.dir_curr() : 0;
     }
 
     /**
@@ -201,6 +185,33 @@ public abstract class Zwerve extends SubsystemBase implements ZmartDash {
     }
 
     /**
+     * Get the controlling <code>Command</code> for the current instance.
+     */
+    public Drive control(Zoystick vel, Zoystick rot) {
+        return new Drive(this, vel, rot);
+    }
+
+    public ZCommand drive_forward() {
+        return new ZLambda<Zwerve>((x) -> x.go(new Vec2D(0.1, 0), 0), this);
+    }
+
+    @Override
+    public String key() {
+        return "Zwerve";
+    }
+
+    /**
+     * Defines one swerve module.
+     */
+    public interface Module {
+
+        Module init();
+
+        Module go(Vec2D velocity);
+
+    }
+
+    /**
      * The driving <code>Command</code> for the chassis.
      */
     public static class Drive extends ZCommand {
@@ -274,21 +285,5 @@ public abstract class Zwerve extends SubsystemBase implements ZmartDash {
             this.inv_rot = rot;
             return this;
         }
-    }
-
-    /**
-     * Get the controlling <code>Command</code> for the current instance.
-     */
-    public Drive control(Zoystick vel, Zoystick rot) {
-        return new Drive(this, vel, rot);
-    }
-
-    public ZCommand drive_forward() {
-        return new ZLambda<Zwerve>((x) -> x.go(new Vec2D(0.1, 0), 0), this);
-    }
-
-    @Override
-    public String key() {
-        return "Zwerve";
     }
 }

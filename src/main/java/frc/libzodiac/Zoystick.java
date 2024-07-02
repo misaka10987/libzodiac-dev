@@ -1,10 +1,10 @@
 package frc.libzodiac;
 
+import edu.wpi.first.wpilibj.Joystick;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.function.Function;
-
-import edu.wpi.first.wpilibj.Joystick;
 
 /**
  * Inheritd from WPILib's <code>Joystick</code>,
@@ -13,15 +13,17 @@ import edu.wpi.first.wpilibj.Joystick;
 public class Zoystick extends Joystick {
 
     /**
+     * Filters the input value as a parabola, e.g. -0.5 -> -0.25.
+     */
+    public static final Function<Double, Double> quad_filter = (x) -> x / Math.abs(x) * x * x;
+    /**
      * Button names to button IDs mappings.
      */
     public HashMap<String, Integer> key_map;
-
     /**
      * Defines the collection of axis to invert.
      */
     public HashSet<Integer> inv;
-
     /**
      * Whether to invert x-axis.
      */
@@ -30,7 +32,6 @@ public class Zoystick extends Joystick {
      * Whether to invert y-axis.
      */
     public boolean inv_y = false;
-
     /**
      * Function to pre-process the input value of joystick.
      */
@@ -38,6 +39,20 @@ public class Zoystick extends Joystick {
 
     public Zoystick(int port) {
         super(port);
+    }
+
+    /**
+     * Filters the input value with a threshold, inputs with absolute values less
+     * than it will be ignored.
+     */
+    public static Function<Double, Double> thre_filter(double thre) {
+        Function<Double, Double> lambda = (x) -> {
+            if (Math.abs(x) > thre) {
+                return x;
+            }
+            return 0.0;
+        };
+        return lambda;
     }
 
     /**
@@ -121,24 +136,5 @@ public class Zoystick extends Joystick {
      */
     public boolean button_released(String button) {
         return this.getRawButtonReleased(this.key_map.get(button));
-    }
-
-    /**
-     * Filters the input value as a parabola, e.g. -0.5 -> -0.25.
-     */
-    public static final Function<Double, Double> quad_filter = (x) -> x / Math.abs(x) * x * x;
-
-    /**
-     * Filters the input value with a threshold, inputs with absolute values less
-     * than it will be ignored.
-     */
-    public static Function<Double, Double> thre_filter(double thre) {
-        Function<Double, Double> lambda = (x) -> {
-            if (Math.abs(x) > thre) {
-                return x;
-            }
-            return 0.0;
-        };
-        return lambda;
     }
 }

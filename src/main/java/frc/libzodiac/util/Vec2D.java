@@ -10,6 +10,26 @@ public class Vec2D {
         this.y = y;
     }
 
+    public static Vec2D add(Vec2D a, Vec2D b) {
+        return new Vec2D(a.x + b.x, a.y + b.y);
+    }
+
+    public static Polar add(Polar a, Polar b) {
+        return Vec2D.add(a.into(), b.into()).into();
+    }
+
+    public static double mul(Vec2D a, Vec2D b) {
+        return a.r() * b.r() * Math.cos(a.theta() - b.theta());
+    }
+
+    public static double mul(Polar a, Polar b) {
+        return Vec2D.mul(a.into(), b.into());
+    }
+
+    public static Vec2D from(Polar v) {
+        return v.into();
+    }
+
     @Override
     public String toString() {
         return "(" + this.x + "," + this.y + ")";
@@ -43,14 +63,6 @@ public class Vec2D {
         return new Vec2D(-this.x, -this.y);
     }
 
-    public static Vec2D add(Vec2D a, Vec2D b) {
-        return new Vec2D(a.x + b.x, a.y + b.y);
-    }
-
-    public static Polar add(Polar a, Polar b) {
-        return Vec2D.add(a.into(), b.into()).into();
-    }
-
     public Vec2D add(Vec2D rhs) {
         return Vec2D.add(this, rhs);
     }
@@ -65,14 +77,6 @@ public class Vec2D {
 
     public Vec2D sub(Polar rhs) {
         return this.sub(rhs.into());
-    }
-
-    public static double mul(Vec2D a, Vec2D b) {
-        return a.r() * b.r() * Math.cos(a.theta() - b.theta());
-    }
-
-    public static double mul(Polar a, Polar b) {
-        return Vec2D.mul(a.into(), b.into());
     }
 
     public Vec2D mul(double k) {
@@ -96,10 +100,6 @@ public class Vec2D {
         return other;
     }
 
-    public static Vec2D from(Polar v) {
-        return v.into();
-    }
-
     public Polar into() {
         return Polar.from(this);
     }
@@ -113,16 +113,16 @@ public class Vec2D {
             this.theta = theta;
         }
 
+        public static Polar from(Vec2D v) {
+            return new Polar(v.r(), v.theta());
+        }
+
         public Polar with_r(double r) {
             return new Polar(r, this.theta);
         }
 
         public Polar with_theta(double theta) {
             return new Polar(this.r, theta);
-        }
-
-        public static Polar from(Vec2D v) {
-            return new Polar(v.r(), v.theta());
         }
 
         public Vec2D into() {

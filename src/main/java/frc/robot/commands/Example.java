@@ -7,7 +7,7 @@ import frc.robot.subsystems.Chassis;
 
 public class Example extends ZCommand {
 
-    private Chassis chassis;
+    private final Chassis chassis;
 
     private Zoystick joystick;
 

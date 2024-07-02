@@ -5,7 +5,10 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.libzodiac.ZmartDash;
+import frc.libzodiac.Zwerve;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -52,9 +55,9 @@ public class Robot extends TimedRobot {
         // and running subsystem periodic() methods. This must be called from the
         // robot's periodic
         // block in order for anything in the Command-based framework to work.
-        var scheduler = CommandScheduler.getInstance();
-        scheduler.schedule(m_bot.chassis.drive_forward());
-        scheduler.run();
+//        var scheduler = CommandScheduler.getInstance();
+//        scheduler.schedule(m_bot.chassis.drive_forward());
+//        scheduler.run();
     }
 
     /**
@@ -126,10 +129,12 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void testPeriodic() {
+        var scheduler = CommandScheduler.getInstance();
+        scheduler.schedule(m_bot.chassis.drive_forward());
+        scheduler.run();
     }
 
     /**
-     * This function is called once when the robot is first started up.
      */
     @Override
     public void simulationInit() {

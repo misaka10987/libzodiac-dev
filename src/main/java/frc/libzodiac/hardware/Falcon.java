@@ -1,9 +1,7 @@
 package frc.libzodiac.hardware;
 
 import com.ctre.phoenix6.configs.Slot0Configs;
-import com.ctre.phoenix6.controls.PositionDutyCycle;
-import com.ctre.phoenix6.controls.StaticBrake;
-import com.ctre.phoenix6.controls.VelocityDutyCycle;
+import com.ctre.phoenix6.controls.*;
 import com.ctre.phoenix6.hardware.TalonFX;
 import frc.libzodiac.Constant;
 import frc.libzodiac.ZMotor;
@@ -66,6 +64,11 @@ public class Falcon extends ZMotor implements ZmartDash {
         return this;
     }
 
+    @Override
+    public String key() {
+        return "Falcon(" + this.can_id + ")";
+    }
+
     public static class Servo extends Falcon implements Zervo {
 
         /**
@@ -85,7 +88,7 @@ public class Falcon extends ZMotor implements ZmartDash {
 
         @Override
         public Servo go(double angle) {
-            this.motor.setControl(new PositionDutyCycle((angle - this.zero) / Constant.FALCON_POSITION_UNIT));
+            this.motor.setControl(new PositionDutyCycle(angle));
             return this;
         }
 
@@ -98,6 +101,11 @@ public class Falcon extends ZMotor implements ZmartDash {
         @Override
         public double get_zero() {
             return this.zero;
+        }
+
+        public double getPosition() {
+            // Why not this.zero? Because idk what this.zero actually is. It just doesn't work.
+            return this.motor.getPosition().refresh().getValue();
         }
 
         @Override
@@ -114,10 +122,5 @@ public class Falcon extends ZMotor implements ZmartDash {
         public String key() {
             return "Falcon.Servo(" + this.can_id + ")";
         }
-    }
-
-    @Override
-    public String key() {
-        return "Falcon(" + this.can_id + ")";
     }
 }

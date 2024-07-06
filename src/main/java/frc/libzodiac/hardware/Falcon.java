@@ -85,7 +85,7 @@ public class Falcon extends ZMotor implements ZmartDash {
 
         @Override
         public Servo go(double angle) {
-            this.motor.setControl(new PositionDutyCycle((angle - this.zero) / Constant.FALCON_POSITION_UNIT));
+            this.motor.setControl(new PositionDutyCycle((angle + this.zero) / Constant.FALCON_POSITION_UNIT));
             return this;
         }
 

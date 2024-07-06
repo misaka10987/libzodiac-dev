@@ -7,12 +7,14 @@ import frc.libzodiac.ZmartDash;
 import frc.libzodiac.hardware.Falcon;
 
 /**
- * Falcon's built-in encoder resets its zero position to the position when power-on.
- * Therefore, an <code>TalonSRXEncoder</code> is used so that it is able to control the servo with absolute positions.
+ * Falcon's built-in encoder resets its zero position to the position when
+ * power-on.
+ * Therefore, an <code>ZEncoder</code> is used so that it is able to control the
+ * servo with absolute positions.
  */
 public class FalconWithEncoder extends ZMotor implements Zervo, ZmartDash {
-    protected final Falcon.Servo motor;
-    protected final ZEncoder encoder;
+    public final Falcon.Servo motor;
+    public final ZEncoder encoder;
 
     public FalconWithEncoder(Falcon.Servo motor, ZEncoder encoder) {
         this.motor = motor;
@@ -22,8 +24,9 @@ public class FalconWithEncoder extends ZMotor implements Zervo, ZmartDash {
     public final FalconWithEncoder calibrate() {
         var expected = this.encoder.get();
         var actual = this.motor.get();
-        // Falcon thinks it is `actual-expected` more than we want. Add that to its zero position.
-        this.motor.zero += actual - expected;
+        // Falcon thinks it is `actual-expected` more than we want. Take that from its
+        // zero position.
+        this.motor.zero -= actual - expected;
         this.debug("motor.zero", this.motor.zero);
         return this;
     }
@@ -63,8 +66,8 @@ public class FalconWithEncoder extends ZMotor implements Zervo, ZmartDash {
     }
 
     @Override
-    public Falcon.Servo go(double raw_unit) {
-        return this.motor.go(raw_unit);
+    public Falcon.Servo go(double rads) {
+        return this.motor.go(rads * 25);
     }
 
     @Override

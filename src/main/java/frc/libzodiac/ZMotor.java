@@ -76,8 +76,7 @@ public abstract class ZMotor {
     /**
      * Set the output.
      *
-     * @param raw_unit Usually speed output percentage in [-1,1] for generic motors
-     *                 and desired angle positions in rads for servos.
+     * @param rads rad/s for general motors and rad for servos.
      */
-    public abstract ZMotor go(double raw_unit);
+    public abstract ZMotor go(double rads);
 }

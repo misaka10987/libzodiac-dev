@@ -19,11 +19,11 @@ public class Zoystick extends Joystick {
     /**
      * Button names to button IDs mappings.
      */
-    public HashMap<String, Integer> key_map;
+    public HashMap<String, Integer> key_map = new HashMap<>();
     /**
      * Defines the collection of axis to invert.
      */
-    public HashSet<Integer> inv;
+    public HashSet<Integer> inv = new HashSet<>();
     /**
      * Whether to invert x-axis.
      */
@@ -46,6 +46,16 @@ public class Zoystick extends Joystick {
      * than it will be ignored.
      */
     public static Function<Double, Double> thre_filter(double thre) {
+        Function<Double, Double> lambda = (x) -> {
+            if (Math.abs(x) > thre) {
+                return x / Math.abs(x) * x * x;
+            }
+            return 0.0;
+        };
+        return lambda;
+    }
+
+    public static Function<Double, Double> thre_quad_filter(double thre) {
         Function<Double, Double> lambda = (x) -> {
             if (Math.abs(x) > thre) {
                 return x;

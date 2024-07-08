@@ -105,6 +105,10 @@ public class Falcon extends ZMotor implements ZmartDash {
             return this.zero;
         }
 
+        public void reset() {
+            this.motor.setPosition(0);
+        }
+
         public double getPosition() {
             // Why not this.zero? Because idk what this.zero actually is. It just doesn't work.
             return this.motor.getPosition().refresh().getValue();

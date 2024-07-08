@@ -195,6 +195,14 @@ public abstract class Zwerve extends SubsystemBase implements ZmartDash {
         return new ZLambda<Zwerve>((x) -> x.go(new Vec2D(0.1, 0), 0), this);
     }
 
+    public ZCommand joystick_drive(Zoystick zoystick) {
+        var vel = new Vec2D(-zoystick.y(), -zoystick.x());
+        return new ZLambda<Zwerve>((x) -> {
+            this.debug("joystick", vel + "");
+            x.go(vel, 0);
+        }, this);
+    }
+
     @Override
     public String key() {
         return "Zwerve";
@@ -209,6 +217,7 @@ public abstract class Zwerve extends SubsystemBase implements ZmartDash {
 
         Module go(Vec2D velocity);
 
+        Module reset();
     }
 
     /**

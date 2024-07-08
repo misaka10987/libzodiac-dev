@@ -18,24 +18,24 @@ import frc.libzodiac.util.Vec2D;
 public class Chassis extends Zwerve {
 
     public static final Falcon[] speed = {
-            new Falcon(3),
+            new Falcon(10),
+            new Falcon(11),
             new Falcon(8),
-            new Falcon(5),
-            new Falcon(10)
+            new Falcon(5)
     };
 
     public static final Falcon.Servo[] servo = {
+            new Falcon.Servo(3),
             new Falcon.Servo(2),
             new Falcon.Servo(12),
             new Falcon.Servo(6),
-            new Falcon.Servo(11),
     };
 
     public static final ZEncoder[] encoder = {
             new TalonSRXEncoder(1).set_zero(3603 / Constant.TALONSRX_ENCODER_UNIT),
-            new TalonSRXEncoder(7).set_zero(967 / Constant.TALONSRX_ENCODER_UNIT),
-            new TalonSRXEncoder(9).set_zero(170 / Constant.TALONSRX_ENCODER_UNIT),
-            new TalonSRXEncoder(4).set_zero(1487 / Constant.TALONSRX_ENCODER_UNIT),
+            new TalonSRXEncoder(4).set_zero(967 / Constant.TALONSRX_ENCODER_UNIT),
+            new TalonSRXEncoder(7).set_zero(170 / Constant.TALONSRX_ENCODER_UNIT),
+            new TalonSRXEncoder(9).set_zero(1487 / Constant.TALONSRX_ENCODER_UNIT),
     };
 
     public static final FalconWithEncoder[] angle = {
@@ -46,10 +46,10 @@ public class Chassis extends Zwerve {
     };
 
     private static final FalconSwerve[] mods = {
-            new FalconSwerve(speed[0], angle[0]),
-            new FalconSwerve(speed[1], angle[1]),
-            new FalconSwerve(speed[2], angle[2]),
-            new FalconSwerve(speed[3], angle[3]),
+            new FalconSwerve(speed[0], angle[0], new Vec2D(1, 1).mul(0.2)),
+            new FalconSwerve(speed[1], angle[1], new Vec2D(1, -1).mul(0.2)),
+            new FalconSwerve(speed[2], angle[2], new Vec2D(-1, 1).mul(0.2)),
+            new FalconSwerve(speed[3], angle[3], new Vec2D(1, -1).mul(0.2)),
     };
 
     private static final Pigeon gyro = new Pigeon(0);

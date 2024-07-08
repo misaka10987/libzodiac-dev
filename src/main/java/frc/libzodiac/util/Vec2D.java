@@ -83,6 +83,10 @@ public class Vec2D {
         return new Vec2D(this.x * k, this.y * k);
     }
 
+    public Vec2D mul(Vec2D v) {
+        return new Vec2D(this.x * v.x, this.y * v.y);
+    }
+
     public Vec2D div(double k) {
         return this.mul(1 / k);
     }

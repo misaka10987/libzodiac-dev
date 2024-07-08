@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.libzodiac.Zwerve;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -111,14 +112,24 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         // CommandScheduler.getInstance().schedule(RobotContainer.swerveDrive);
         // CommandScheduler.getInstance().schedule(RobotContainer.sc);
-//    var scheduler = CommandScheduler.getInstance();
-//    scheduler.schedule(m_bot.chassis_ctrl());
+        var scheduler = CommandScheduler.getInstance();
+        scheduler.schedule(m_bot.chassis.joystick_drive(m_bot.drive));
+//        scheduler.schedule(m_bot.chassis_ctrl());
+//        scheduler.schedule(new RunCommand(() -> {
+//            m_bot.shooter1.set(0.1);
+//            m_bot.shooter2.set(0.1);
+//        }));
+        scheduler.run();
     }
 
     @Override
     public void testInit() {
         // Cancels all running commands at the start of test mode.
         CommandScheduler.getInstance().cancelAll();
+
+//        for (Zwerve.Module i : m_bot.chassis.module) {
+//            i.reset();
+//        }
     }
 
     /**

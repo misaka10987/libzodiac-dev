@@ -71,14 +71,14 @@ public class FalconWithEncoder extends ZMotor implements Zervo, ZmartDash {
     }
 
     @Override
-    public FalconWithEncoder set_zero(double zero) {
-        this.encoder.zero = zero;
-        return this;
+    public double get_zero() {
+        return this.encoder.zero;
     }
 
     @Override
-    public double get_zero() {
-        return this.encoder.zero;
+    public FalconWithEncoder set_zero(double zero) {
+        this.encoder.zero = zero;
+        return this;
     }
 
     @Override

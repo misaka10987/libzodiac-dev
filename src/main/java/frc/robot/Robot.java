@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.libzodiac.Zwerve;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -52,9 +53,9 @@ public class Robot extends TimedRobot {
         // and running subsystem periodic() methods. This must be called from the
         // robot's periodic
         // block in order for anything in the Command-based framework to work.
-        var scheduler = CommandScheduler.getInstance();
-        scheduler.schedule(m_bot.chassis.drive_forward());
-        scheduler.run();
+//        var scheduler = CommandScheduler.getInstance();
+//        scheduler.schedule(m_bot.chassis.drive_forward());
+//        scheduler.run();
     }
 
     /**
@@ -111,14 +112,24 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         // CommandScheduler.getInstance().schedule(RobotContainer.swerveDrive);
         // CommandScheduler.getInstance().schedule(RobotContainer.sc);
-//    var scheduler = CommandScheduler.getInstance();
-//    scheduler.schedule(m_bot.chassis_ctrl());
+        var scheduler = CommandScheduler.getInstance();
+        scheduler.schedule(m_bot.chassis.joystick_drive(m_bot.drive));
+//        scheduler.schedule(m_bot.chassis_ctrl());
+//        scheduler.schedule(new RunCommand(() -> {
+//            m_bot.shooter1.set(0.1);
+//            m_bot.shooter2.set(0.1);
+//        }));
+        scheduler.run();
     }
 
     @Override
     public void testInit() {
         // Cancels all running commands at the start of test mode.
         CommandScheduler.getInstance().cancelAll();
+
+//        for (Zwerve.Module i : m_bot.chassis.module) {
+//            i.reset();
+//        }
     }
 
     /**
@@ -126,10 +137,13 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void testPeriodic() {
+        var scheduler = CommandScheduler.getInstance();
+        scheduler.schedule(m_bot.chassis.drive_forward());
+        scheduler.run();
     }
 
     /**
-     * This function is called once when the robot is first started up.
+     *
      */
     @Override
     public void simulationInit() {

@@ -6,11 +6,11 @@ import frc.libzodiac.ZEncoder;
 
 public class TalonSRXEncoder extends ZEncoder {
 
+    protected TalonSRX encoder;
+
     public TalonSRXEncoder(int can_id) {
         super(can_id);
     }
-
-    protected TalonSRX encoder;
 
     @Override
     public ZEncoder init() {

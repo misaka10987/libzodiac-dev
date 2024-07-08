@@ -28,12 +28,15 @@ public class Util {
      * @return In (-mod,mod), and NaN for NaN and Infinite parameters.
      */
     public static double mod(Double num, double mod) {
+        // I believe there are still some bugs.
         if (num.isInfinite() || num.isNaN())
             return Double.NaN;
-        var ans = (int) (Math.abs(num) / mod);
-        if (ans < 0)
-            return num + ans * mod;
-        return num - ans * mod;
+        if (num < 0) {
+            return -mod(-num, mod);
+        }
+        var ans = (int) (num / 2 / mod);
+        double res = num - ans * 2 * mod;
+        return res > mod ? res - 2 * mod : res;
     }
 
     /**

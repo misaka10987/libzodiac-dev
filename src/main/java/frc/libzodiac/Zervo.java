@@ -6,22 +6,22 @@ package frc.libzodiac;
 public interface Zervo {
 
     /**
-     * Configures the zero position of the motor.
-     */
-    public Zervo set_zero(double zero);
-
-    /**
      * Gets the zero position of the motor.
      */
-    public double get_zero();
+    double get_zero();
+
+    /**
+     * Configures the zero position of the motor.
+     */
+    Zervo set_zero(double zero);
 
     /**
      * Gets the current position.
      */
-    public double get();
+    double get();
 
     /**
      * Convaries the servo motor and returns a generic motor.
      */
-    public ZMotor motor();
+    ZMotor motor();
 }

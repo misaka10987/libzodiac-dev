@@ -28,6 +28,8 @@ public abstract class ZGyro {
 
     protected abstract double get_roll();
 
+    public abstract ZGyro reset();
+
     /**
      * Read current yaw from sensor.
      */

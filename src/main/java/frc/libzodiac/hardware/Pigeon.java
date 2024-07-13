@@ -33,4 +33,10 @@ public class Pigeon extends ZGyro {
         return Util.rad(this.gyro.getRoll().refresh().getValue());
     }
 
+    @Override
+    public ZGyro reset() {
+        this.zero_yaw = this.get_yaw();
+        return this;
+    }
+
 }

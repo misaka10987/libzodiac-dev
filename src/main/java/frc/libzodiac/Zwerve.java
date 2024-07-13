@@ -102,6 +102,7 @@ public abstract class Zwerve extends SubsystemBase implements ZmartDash {
         for (Module i : this.module) {
             i.init();
         }
+        this.gyro.init();
         return this.opt_init();
     }
 
@@ -148,18 +149,20 @@ public abstract class Zwerve extends SubsystemBase implements ZmartDash {
     public Zwerve go(Vec2D velocity, double omega) {
         var l = this.shape.x / 2;
         var w = this.shape.y / 2;
-        var pi2 = Math.PI / 2;
-        var vt = omega * this.radius();
+        var vt = omega;
+        velocity = velocity.rot(this.dir_fix());
         Vec2D[] v = {
-                new Vec2D(l, w).rot(pi2).with_r(vt).add(velocity),
-                new Vec2D(-l, w).rot(pi2).with_r(vt).add(velocity),
-                new Vec2D(-l, -w).rot(pi2).with_r(vt).add(velocity),
-                new Vec2D(l, -w).rot(pi2).with_r(vt).add(velocity),
+                new Vec2D(-l, -w).with_r(vt).add(velocity),
+                new Vec2D(l, -w).with_r(vt).add(velocity),
+                new Vec2D(l, w).with_r(vt).add(velocity),
+                new Vec2D(-l, w).with_r(vt).add(velocity),
         };
         var max = v[0].max(v[1]).max(v[2]).max(v[3]).r();
         if (max > 1) for (int i = 0; i < 4; i++) v[i] = v[i].div(max);
-        for (int i = 0; i < 4; i++)
-            this.module[i].go(v[i].mul(output).rot(this.dir_fix()));
+        this.module[0].go(v[0].mul(output));
+        this.module[1].go(v[1].mul(output));
+        this.module[2].go(v[2].mul(output));
+        this.module[3].go(v[3].mul(output));
         return this;
     }
 
@@ -169,10 +172,10 @@ public abstract class Zwerve extends SubsystemBase implements ZmartDash {
     }
 
     /**
-     * Enable headless mode.
+     * Switch headless mode.
      */
     public Zwerve headless() {
-        this.headless = true;
+        this.headless = !this.headless;
         return this;
     }
 
@@ -192,15 +195,48 @@ public abstract class Zwerve extends SubsystemBase implements ZmartDash {
     }
 
     public ZCommand drive_forward() {
-        return new ZLambda<Zwerve>((x) -> x.go(new Vec2D(0.1, 0), 0), this);
+        return new ZLambda<>((x) -> x.go(new Vec2D(0.1, 0), 0), this);
     }
 
-    public ZCommand joystick_drive(Zoystick zoystick) {
-        var vel = new Vec2D(-zoystick.y(), -zoystick.x());
-        return new ZLambda<Zwerve>((x) -> {
-            this.debug("joystick", vel + "");
-            x.go(vel, 0);
+    public ZCommand single_joystick_drive(Zoystick zoystick) {
+        return new ZLambda<>((x) -> {
+            var vel = new Vec2D(-zoystick.ly(), -zoystick.lx());
+            this.debug("vel", vel + "");
+            this.debug("rot", zoystick.rx());
+            x.go(vel, zoystick.rx());
         }, this);
+    }
+
+    public ZCommand check_headless(Zoystick zoystick) {
+        return new ZLambda<>((x) -> {
+            if (zoystick.button("X")) {
+                this.headless();
+            }
+            this.debug("x", zoystick.button("X"));
+            this.debug("headless", this.headless);
+            this.debug("gyro", this.gyro.yaw());
+        }, this);
+    }
+
+    public ZCommand check_wheel_reset(Zoystick zoystick) {
+        return new ZLambda<>((x) -> {
+            if (zoystick.button("A")) {
+                this.reset(false);
+            }
+        }, this);
+    }
+
+    public Zwerve reset() {
+        return reset(true);
+    }
+
+    public Zwerve reset(boolean full) {
+        this.module[0].reset(full);
+        this.module[1].reset(full);
+        this.module[2].reset(full);
+        this.module[3].reset(full);
+        this.gyro.reset();
+        return this;
     }
 
     @Override
@@ -217,7 +253,7 @@ public abstract class Zwerve extends SubsystemBase implements ZmartDash {
 
         Module go(Vec2D velocity);
 
-        Module reset();
+        Module reset(boolean full);
     }
 
     /**
@@ -261,8 +297,8 @@ public abstract class Zwerve extends SubsystemBase implements ZmartDash {
         // Called every time the scheduler runs while the command is scheduled.
         @Override
         protected Drive exec() {
-            var v_x = this.vel_ctrl.x();
-            var v_y = this.vel_ctrl.y();
+            var v_x = this.vel_ctrl.lx();
+            var v_y = this.vel_ctrl.ly();
             var omega = this.rot_ctrl.getRawAxis(0);
             if (this.inv_vx)
                 v_x = -v_x;

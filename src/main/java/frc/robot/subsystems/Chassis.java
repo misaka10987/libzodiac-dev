@@ -46,10 +46,10 @@ public class Chassis extends Zwerve {
     };
 
     private static final FalconSwerve[] mods = {
-            new FalconSwerve(speed[0], angle[0], new Vec2D(1, 1).mul(0.2)),
-            new FalconSwerve(speed[1], angle[1], new Vec2D(1, -1).mul(0.2)),
-            new FalconSwerve(speed[2], angle[2], new Vec2D(-1, 1).mul(0.2)),
-            new FalconSwerve(speed[3], angle[3], new Vec2D(1, -1).mul(0.2)),
+            new FalconSwerve(speed[0], angle[0], new Vec2D(1, 1).mul(0.25)),
+            new FalconSwerve(speed[1], angle[1], new Vec2D(1, -1).mul(0.25)),
+            new FalconSwerve(speed[2], angle[2], new Vec2D(-1, 1).mul(0.25)),
+            new FalconSwerve(speed[3], angle[3], new Vec2D(1, -1).mul(0.25)),
     };
 
     private static final Pigeon gyro = new Pigeon(0);
@@ -83,7 +83,7 @@ public class Chassis extends Zwerve {
 
     @Override
     protected Zwerve opt_init() {
-        super.gyro.zero_yaw = 0;
+        super.gyro.zero_yaw = super.gyro.yaw();
         return this;
     }
 }

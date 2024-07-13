@@ -67,7 +67,7 @@ public class FalconWithEncoder extends ZMotor implements Zervo, ZmartDash {
 
     @Override
     public Falcon.Servo go(double rads) {
-        return this.motor.go(rads * 25);
+        return this.motor.go(rads);
     }
 
     @Override

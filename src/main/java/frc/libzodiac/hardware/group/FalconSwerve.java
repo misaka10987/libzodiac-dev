@@ -35,6 +35,12 @@ public final class FalconSwerve implements Module, ZmartDash {
         this.debug("go", "" + velocity);
         var angle = velocity.theta();
         var speed = velocity.r();
+
+        if (speed < 0.02) {
+            this.debug("skip", true);
+        }
+        this.debug("skip", false);
+
         if (this.speed_inverted) {
             angle = Util.mod_pi(angle + Math.PI);
             speed = -speed;
@@ -45,9 +51,10 @@ public final class FalconSwerve implements Module, ZmartDash {
             angle = Util.mod_pi(angle + Math.PI);
             delta = Util.mod_pi(angle - curr);
             this.speed_inverted = !this.speed_inverted;
+            speed = -speed;
         }
         this.debug("curr", curr);
-        this.debug("speed", speed);
+        this.debug("delta", delta);
         double target = curr + delta;
         this.debug("target", target);
         this.angle_motor.go(target * Constant.SWERVE_MOTOR_WHEEL_RATIO);
@@ -56,9 +63,9 @@ public final class FalconSwerve implements Module, ZmartDash {
     }
 
     @Override
-    public Module reset() {
+    public Module reset(boolean full) {
         this.angle_motor.motor.reset();
-        this.speed_inverted = false;
+        this.speed_inverted = this.speed_inverted && !full;
         return this;
     }
 

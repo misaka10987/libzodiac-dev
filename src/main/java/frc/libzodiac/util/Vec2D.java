@@ -92,9 +92,7 @@ public class Vec2D {
     }
 
     public Vec2D rot(double phi) {
-        var r = this.r();
-        var th = this.theta() + phi;
-        return new Vec2D(r * Math.cos(th), r * Math.sin(th));
+        return this.with_theta(this.theta() + phi);
     }
 
     public Vec2D max(Vec2D other) {

@@ -11,7 +11,7 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {
-          "5,2": {
+          "6,2": {
             "size": [
               1,
               1
@@ -24,22 +24,9 @@
               "_showGlyph": false
             }
           },
-          "0,4": {
-            "size": [
-              6,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Zwerve-\u003ejoystick: ",
-              "_title": "Zwerve-\u003ejoystick: ",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
           "2,0": {
             "size": [
-              1,
+              2,
               1
             ],
             "content": {
@@ -50,7 +37,7 @@
               "_showGlyph": false
             }
           },
-          "3,0": {
+          "4,0": {
             "size": [
               1,
               1
@@ -63,20 +50,7 @@
               "_showGlyph": false
             }
           },
-          "4,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/FalconSwerve(Falcon(10),...)-\u003espeed: ",
-              "_title": "FalconSwerve(Falcon(10),...)-\u003espeed: ",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "5,0": {
+          "6,0": {
             "size": [
               1,
               1
@@ -91,7 +65,7 @@
           },
           "2,1": {
             "size": [
-              1,
+              2,
               1
             ],
             "content": {
@@ -102,7 +76,7 @@
               "_showGlyph": false
             }
           },
-          "3,1": {
+          "4,1": {
             "size": [
               1,
               1
@@ -115,20 +89,7 @@
               "_showGlyph": false
             }
           },
-          "4,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/FalconSwerve(Falcon(11),...)-\u003espeed: ",
-              "_title": "FalconSwerve(Falcon(11),...)-\u003espeed: ",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "5,1": {
+          "6,1": {
             "size": [
               1,
               1
@@ -143,7 +104,7 @@
           },
           "2,2": {
             "size": [
-              1,
+              2,
               1
             ],
             "content": {
@@ -154,7 +115,7 @@
               "_showGlyph": false
             }
           },
-          "3,2": {
+          "4,2": {
             "size": [
               1,
               1
@@ -167,22 +128,9 @@
               "_showGlyph": false
             }
           },
-          "4,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/FalconSwerve(Falcon(8),...)-\u003espeed: ",
-              "_title": "FalconSwerve(Falcon(8),...)-\u003espeed: ",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
           "2,3": {
             "size": [
-              1,
+              2,
               1
             ],
             "content": {
@@ -193,7 +141,7 @@
               "_showGlyph": false
             }
           },
-          "3,3": {
+          "4,3": {
             "size": [
               1,
               1
@@ -206,20 +154,7 @@
               "_showGlyph": false
             }
           },
-          "4,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/FalconSwerve(Falcon(5),...)-\u003espeed: ",
-              "_title": "FalconSwerve(Falcon(5),...)-\u003espeed: ",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "5,3": {
+          "6,3": {
             "size": [
               1,
               1
@@ -283,6 +218,187 @@
               "_glyph": 148,
               "_showGlyph": false
             }
+          },
+          "7,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/FalconSwerve(Falcon(10),...)-\u003eskip: ",
+              "_title": "FalconSwerve(Falcon(10),...)-\u003eskip: ",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "7,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/FalconSwerve(Falcon(11),...)-\u003eskip: ",
+              "_title": "FalconSwerve(Falcon(11),...)-\u003eskip: ",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "7,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/FalconSwerve(Falcon(8),...)-\u003eskip: ",
+              "_title": "FalconSwerve(Falcon(8),...)-\u003eskip: ",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "7,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/FalconSwerve(Falcon(5),...)-\u003eskip: ",
+              "_title": "FalconSwerve(Falcon(5),...)-\u003eskip: ",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "3,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Zwerve-\u003eheadless: ",
+              "_title": "Zwerve-\u003eheadless: ",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "5,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/FalconSwerve(Falcon(10),...)-\u003edelta: ",
+              "_title": "FalconSwerve(Falcon(10),...)-\u003edelta: ",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "5,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/FalconSwerve(Falcon(11),...)-\u003edelta: ",
+              "_title": "FalconSwerve(Falcon(11),...)-\u003edelta: ",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "5,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/FalconSwerve(Falcon(8),...)-\u003edelta: ",
+              "_title": "FalconSwerve(Falcon(8),...)-\u003edelta: ",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "5,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/FalconSwerve(Falcon(5),...)-\u003edelta: ",
+              "_title": "FalconSwerve(Falcon(5),...)-\u003edelta: ",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "0,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Zwerve-\u003evel: ",
+              "_title": "Zwerve-\u003evel: ",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "1,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Zwerve-\u003erot: ",
+              "_title": "Zwerve-\u003erot: ",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "4,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Zwerve-\u003egyro: ",
+              "_title": "Zwerve-\u003egyro: ",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "8,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Zwerve-\u003ex: ",
+              "_title": "Zwerve-\u003ex: ",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
           }
         }
       }
@@ -302,9 +418,9 @@
     }
   ],
   "windowGeometry": {
-    "x": 0.0,
-    "y": 0.0,
-    "width": 1536.0,
-    "height": 864.0
+    "x": -7.199999809265137,
+    "y": -7.199999809265137,
+    "width": 1550.4000244140625,
+    "height": 878.4000244140625
   }
 }

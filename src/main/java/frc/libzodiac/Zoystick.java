@@ -55,7 +55,7 @@ public class Zoystick extends Joystick {
         return lambda;
     }
 
-    public static Function<Double, Double> thre_quad_filter(double thre) {
+    public static Function<Double, Double> default_filter(double thre) {
         Function<Double, Double> lambda = (x) -> {
             if (Math.abs(x) > thre) {
                 return x;
@@ -94,17 +94,38 @@ public class Zoystick extends Joystick {
     }
 
     /**
-     * Gets the x-axis of the joystick.
+     * Gets the x-axis of the left joystick.
      */
-    public double x() {
+    public double lx() {
         return this.axis(0);
     }
 
     /**
-     * Gets the y-axis of the joystick.
+     * Gets the y-axis of the left joystick.
      */
-    public double y() {
+    public double ly() {
         return this.axis(1);
+    }
+
+    /**
+     * Gets the x-axis of the right joystick.
+     */
+    public double rx() {
+        return this.axis(4);
+    }
+
+    /**
+     * Gets the axis of the left joystick.
+     */
+    public double lTrigger() {
+        return this.axis(2);
+    }
+
+    /**
+     * Gets the axis of the right joystick.
+     */
+    public double rTrigger() {
+        return this.axis(3);
     }
 
     /**

@@ -4,12 +4,11 @@
 
 package frc.robot;
 
-import com.ctre.phoenix6.hardware.TalonFX;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.libzodiac.Zoystick;
 import frc.robot.subsystems.Chassis;
+import frc.robot.subsystems.Shooter;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -24,17 +23,19 @@ public class RobotContainer {
 
     public Chassis chassis = new Chassis();
 
-//    public TalonFX shooter1 = new TalonFX(18);
-//    public TalonFX shooter2 = new TalonFX(30);
+    public Shooter shooter = new Shooter(18, 30, false, true);
 
     public Zoystick drive = new Zoystick(0)
-            .map(0, "X")
-            .map(1, "Y")
-            .set_filter(Zoystick.thre_quad_filter(0.05));
+            .map(1, "A")
+            .map(2, "B")
+            .map(3, "X")
+            .map(4, "Y")
+            .set_filter(Zoystick.default_filter(0.08));
 //    public Zoystick ctrl = new Zoystick(1)
 //            .map(0, "X")
 //            .map(1, "Y")
 //            .set_filter(Zoystick.thre_filter(0.1));
+
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */

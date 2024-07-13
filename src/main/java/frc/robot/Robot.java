@@ -6,7 +6,6 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.libzodiac.Zwerve;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -63,6 +62,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void disabledInit() {
+        CommandScheduler.getInstance().cancelAll();
     }
 
     @Override
@@ -103,6 +103,7 @@ public class Robot extends TimedRobot {
         // RobotContainer.getTeleopShooterCommand().schedule();
         // if (RobotContainer.getTeleopIntakeCommand() != null)
         // RobotContainer.getTeleopIntakeCommand().schedule();
+        m_bot.chassis.reset();
     }
 
     /**
@@ -113,13 +114,20 @@ public class Robot extends TimedRobot {
         // CommandScheduler.getInstance().schedule(RobotContainer.swerveDrive);
         // CommandScheduler.getInstance().schedule(RobotContainer.sc);
         var scheduler = CommandScheduler.getInstance();
-        scheduler.schedule(m_bot.chassis.joystick_drive(m_bot.drive));
+        scheduler.schedule(m_bot.chassis.single_joystick_drive(m_bot.drive));
+        scheduler.run();
+        scheduler.schedule(m_bot.shooter.shoot(m_bot.drive));
+        scheduler.run();
+        scheduler.schedule(m_bot.chassis.check_headless(m_bot.drive));
+        scheduler.run();
+        scheduler.schedule(m_bot.chassis.check_wheel_reset(m_bot.drive));
+        scheduler.run();
 //        scheduler.schedule(m_bot.chassis_ctrl());
 //        scheduler.schedule(new RunCommand(() -> {
 //            m_bot.shooter1.set(0.1);
 //            m_bot.shooter2.set(0.1);
 //        }));
-        scheduler.run();
+//        scheduler.run();
     }
 
     @Override

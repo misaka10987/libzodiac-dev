@@ -17,7 +17,7 @@ public class Example extends ZCommand {
 
     @Override
     protected ZCommand exec() {
-        if (this.joystick.button_pressed("x")) {
+        if (this.joystick.button("X")) {
             this.chassis.headless();
             this.chassis.go(new Vec2D(1, 0), 0);
         }

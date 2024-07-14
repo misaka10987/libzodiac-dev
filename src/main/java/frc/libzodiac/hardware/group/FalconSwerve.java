@@ -64,8 +64,7 @@ public final class FalconSwerve implements Module, ZmartDash {
 
     @Override
     public Module reset(boolean full) {
-        this.angle_motor.motor.reset();
-        this.speed_inverted = this.speed_inverted && !full;
+        this.speed_inverted = this.angle_motor.motor.reset(full, this.speed_inverted);
         return this;
     }
 
@@ -74,4 +73,3 @@ public final class FalconSwerve implements Module, ZmartDash {
         return "FalconSwerve(" + this.speed_motor.key() + ",...)";
     }
 }
-

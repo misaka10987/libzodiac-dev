@@ -6,6 +6,7 @@ import com.ctre.phoenix6.controls.StaticBrake;
 import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
 import frc.libzodiac.Constant;
+import frc.libzodiac.Util;
 import frc.libzodiac.ZMotor;
 import frc.libzodiac.Zervo;
 import frc.libzodiac.ZmartDash;
@@ -105,8 +106,16 @@ public class Falcon extends ZMotor implements ZmartDash {
             return this.zero;
         }
 
-        public void reset() {
-            this.motor.setPosition(0);
+        public boolean reset(boolean full, boolean reverse) {
+            var curr = this.getPosition() / Constant.SWERVE_MOTOR_WHEEL_RATIO;
+            double delta = -Util.mod_pi(curr);
+            if (!full && Math.abs(delta) > Math.PI / 2) {
+                delta = Util.mod_pi(delta + Math.PI);
+                reverse = !reverse;
+            }
+            double target = curr + delta;
+            this.go(target * Constant.SWERVE_MOTOR_WHEEL_RATIO);
+            return !full && reverse;
         }
 
         public double getPosition() {

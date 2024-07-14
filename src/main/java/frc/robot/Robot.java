@@ -134,10 +134,7 @@ public class Robot extends TimedRobot {
     public void testInit() {
         // Cancels all running commands at the start of test mode.
         CommandScheduler.getInstance().cancelAll();
-
-//        for (Zwerve.Module i : m_bot.chassis.module) {
-//            i.reset();
-//        }
+        m_bot.chassis.reset();
     }
 
     /**

@@ -50,10 +50,7 @@ public abstract class Zwerve extends SubsystemBase implements ZmartDash {
      */
     public final Module[] module;
     public boolean headless = false;
-    /**
-     * Zero direction of the gyro.
-     */
-    public double dir_zero = 0;
+
     /**
      * Modifier timed at the output speed of the chassis.
      */
@@ -83,7 +80,7 @@ public abstract class Zwerve extends SubsystemBase implements ZmartDash {
      * Get the absolute current direction of the robot.j
      */
     public double dir_curr() {
-        return this.gyro.get_yaw() - this.dir_zero;
+        return this.gyro.yaw();
     }
 
     /**
@@ -221,20 +218,31 @@ public abstract class Zwerve extends SubsystemBase implements ZmartDash {
     public ZCommand check_wheel_reset(Zoystick zoystick) {
         return new ZLambda<>((x) -> {
             if (zoystick.button("A")) {
-                this.reset(false);
+                this.reset();
+            }
+            if (zoystick.button("Y")) {
+                this.module[0].clear();
+                this.module[1].clear();
+                this.module[2].clear();
+                this.module[3].clear();
             }
         }, this);
     }
 
     public Zwerve reset() {
-        return reset(true);
+        this.module[0].reset();
+        this.module[1].reset();
+        this.module[2].reset();
+        this.module[3].reset();
+        this.gyro.reset();
+        return this;
     }
 
-    public Zwerve reset(boolean full) {
-        this.module[0].reset(full);
-        this.module[1].reset(full);
-        this.module[2].reset(full);
-        this.module[3].reset(full);
+    public Zwerve clear() {
+        this.module[0].clear();
+        this.module[1].clear();
+        this.module[2].clear();
+        this.module[3].clear();
         this.gyro.reset();
         return this;
     }
@@ -253,7 +261,9 @@ public abstract class Zwerve extends SubsystemBase implements ZmartDash {
 
         Module go(Vec2D velocity);
 
-        Module reset(boolean full);
+        Module reset();
+
+        Module clear();
     }
 
     /**

@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-import frc.libzodiac.Constant;
 import frc.libzodiac.ZEncoder;
 import frc.libzodiac.Zwerve;
 import frc.libzodiac.hardware.Falcon;
@@ -32,10 +31,10 @@ public class Chassis extends Zwerve {
     };
 
     public static final ZEncoder[] encoder = {
-            new TalonSRXEncoder(1).set_zero(3603 / Constant.TALONSRX_ENCODER_UNIT),
-            new TalonSRXEncoder(4).set_zero(967 / Constant.TALONSRX_ENCODER_UNIT),
-            new TalonSRXEncoder(7).set_zero(170 / Constant.TALONSRX_ENCODER_UNIT),
-            new TalonSRXEncoder(9).set_zero(1487 / Constant.TALONSRX_ENCODER_UNIT),
+            new TalonSRXEncoder(1),
+            new TalonSRXEncoder(4),
+            new TalonSRXEncoder(7),
+            new TalonSRXEncoder(9),
     };
 
     public static final FalconWithEncoder[] angle = {

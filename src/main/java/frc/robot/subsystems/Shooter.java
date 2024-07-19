@@ -22,8 +22,10 @@ public class Shooter extends SubsystemBase implements ZmartDash {
 
     public ZCommand shoot(Zoystick zoystick) {
         return new ZLambda<>((x) -> {
-            this.shooter1.set(zoystick.lTrigger());
-            this.shooter2.set(zoystick.rTrigger());
+            var speed = zoystick.rTrigger();
+            this.debug("shooter", speed);
+            this.shooter1.set(speed);
+            this.shooter2.set(speed);
         }, this);
     }
 

@@ -1,9 +1,6 @@
 package frc.libzodiac.hardware.group;
 
-import frc.libzodiac.ZEncoder;
-import frc.libzodiac.ZMotor;
-import frc.libzodiac.Zervo;
-import frc.libzodiac.ZmartDash;
+import frc.libzodiac.*;
 import frc.libzodiac.hardware.Falcon;
 
 /**
@@ -94,5 +91,29 @@ public class FalconWithEncoder extends ZMotor implements Zervo, ZmartDash {
     @Override
     public String key() {
         return "FalconWithEncoder(" + this.motor.key() + "," + this.encoder.key() + ")";
+    }
+
+    public boolean reset(boolean reverse) {
+        var curr = this.getPosition() / Constant.SWERVE_MOTOR_WHEEL_RATIO;
+        double delta = -Util.mod_pi(curr);
+        if (Math.abs(delta) > Math.PI / 2) {
+            delta = Util.mod_pi(delta + Math.PI);
+            reverse = !reverse;
+        }
+        double target = curr + delta;
+        this.go(target * Constant.SWERVE_MOTOR_WHEEL_RATIO);
+        return reverse;
+    }
+
+    public double getPosition() {
+        // Why not this.zero? Because idk what this.zero actually is. It just doesn't work.
+        return this.motor.getPosition().refresh().getValue();
+        //return this.encoder.get();
+    }
+
+    public Zervo clear() {
+        this.motor.setPosition(0);
+        this.encoder.clear();
+        return this;
     }
 }

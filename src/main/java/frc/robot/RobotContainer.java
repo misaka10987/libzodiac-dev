@@ -23,7 +23,7 @@ public class RobotContainer {
 
     public Chassis chassis = new Chassis();
 
-    public Shooter shooter = new Shooter(18, 30, false, true);
+    public Shooter shooter = new Shooter(18, 30, true, false);
 
     public Zoystick drive = new Zoystick(0)
             .map(1, "A")
@@ -52,6 +52,7 @@ public class RobotContainer {
 
     public RobotContainer init() {
         chassis.init();
+        chassis.reset();
         return this;
     }
 

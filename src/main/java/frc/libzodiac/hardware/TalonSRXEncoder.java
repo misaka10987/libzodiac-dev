@@ -15,6 +15,7 @@ public class TalonSRXEncoder extends ZEncoder {
     @Override
     public ZEncoder init() {
         this.encoder = new TalonSRX(this.can_id);
+        this.set_zero();
         return this;
     }
 
@@ -28,4 +29,10 @@ public class TalonSRXEncoder extends ZEncoder {
         return this.get_raw() / Constant.TALONSRX_ENCODER_UNIT;
     }
 
+    @Override
+    public ZEncoder clear() {
+        this.encoder.setSelectedSensorPosition(0);
+        this.zero = 0;
+        return this;
+    }
 }

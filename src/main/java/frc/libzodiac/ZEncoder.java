@@ -17,6 +17,7 @@ public abstract class ZEncoder implements ZmartDash {
 
     public ZEncoder(int can_id) {
         this.can_id = can_id;
+        this.init();
     }
 
     /**
@@ -27,8 +28,8 @@ public abstract class ZEncoder implements ZmartDash {
     /**
      * Configures the zero position of the encoder.
      */
-    public ZEncoder set_zero(double pos) {
-        this.zero = pos;
+    public ZEncoder set_zero() {
+        this.zero = this.get_rad();
         return this;
     }
 
@@ -53,4 +54,6 @@ public abstract class ZEncoder implements ZmartDash {
     public String key() {
         return "ZEncoder(" + this.can_id + ")";
     }
+
+    public abstract ZEncoder clear();
 }

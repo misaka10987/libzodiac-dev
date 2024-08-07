@@ -21,6 +21,8 @@ jobs:
       contents: read
 
     steps:
+    - name: Fetch submodule
+      run: git submodule update --recursive --remote
     - uses: actions/checkout@v4
     - name: Set up JDK 17
       uses: actions/setup-java@v4

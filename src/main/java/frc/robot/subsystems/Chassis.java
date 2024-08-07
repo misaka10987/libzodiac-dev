@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
 import frc.libzodiac.ZEncoder;
@@ -58,8 +54,8 @@ public class Chassis extends Zwerve {
      */
     public Chassis() {
         super(mods, gyro, new Vec2D(114, 114));
-        var v = new PIDProfile(0.15, 0, 0);
-        var a = new PIDProfile(0.05, 0.001, 0);
+        final var v = new PIDProfile(0.15, 0, 0);
+        final var a = new PIDProfile(0.05, 0.001, 0);
         // Mod I.
         mods[0].speed_motor.set_pid(v);
         mods[0].angle_motor.set_pid(a);
@@ -75,14 +71,8 @@ public class Chassis extends Zwerve {
     }
 
     @Override
-    public void periodic() {
-        // This method will be called once per scheduler run
-        super.periodic();
-    }
-
-    @Override
     protected Zwerve opt_init() {
-        super.gyro.zero_yaw = super.gyro.yaw();
+        super.gyro.reset("yaw");
         return this;
     }
 }

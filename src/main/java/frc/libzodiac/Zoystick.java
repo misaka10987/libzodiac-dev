@@ -1,6 +1,8 @@
 package frc.libzodiac;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,12 +12,17 @@ import java.util.function.Function;
  * Inheritd from WPILib's <code>Joystick</code>,
  * added some utilities to enhance using experience.
  */
-public class Zoystick extends Joystick {
+public class Zoystick extends Joystick implements ZmartDash {
 
     /**
-     * Filters the input value as a parabola, e.g. -0.5 -> -0.25.
+     * Filters the input value as a quadratically, e.g. -0.5 -> -0.25.
      */
-    public static final Function<Double, Double> quad_filter = (x) -> x / Math.abs(x) * x * x;
+    public static final Function<Double, Double> QUAD_FILTER = (x) -> x / Math.abs(x) * x * x;
+
+    public final int port;
+
+    private final CommandJoystick controler;
+
     /**
      * Button names to button IDs mappings.
      */
@@ -39,6 +46,8 @@ public class Zoystick extends Joystick {
 
     public Zoystick(int port) {
         super(port);
+        this.port = port;
+        this.controler = new CommandJoystick(port);
     }
 
     /**
@@ -87,9 +96,8 @@ public class Zoystick extends Joystick {
      * Get the filtered input of an axis.
      */
     public double axis(int axis) {
-        var a = this.filter_fn.apply(this.getRawAxis(axis));
-        if (this.inv.contains(axis))
-            a = -a;
+        final var v = this.filter_fn.apply(this.getRawAxis(axis));
+        final var a = this.inv.contains(axis) ? -v : v;
         return a;
     }
 
@@ -156,7 +164,7 @@ public class Zoystick extends Joystick {
      * but returns true only if the button is pressed from the release status since
      * last call.
      */
-    public boolean button_pressed(String button) {
+    public boolean pressed(String button) {
         return this.getRawButtonPressed(this.key_map.get(button));
     }
 
@@ -165,7 +173,32 @@ public class Zoystick extends Joystick {
      * but returns true only if the button is released from pressed status since
      * last call.
      */
-    public boolean button_released(String button) {
+    public boolean released(String button) {
         return this.getRawButtonReleased(this.key_map.get(button));
+    }
+
+    public Zoystick bind(int button, Command command, boolean on) {
+        if (on)
+            this.controler.button(button).toggleOnTrue(command);
+        else
+            this.controler.button(button).toggleOnFalse(command);
+        return this;
+    }
+
+    public Zoystick bind(int button, Command command) {
+        return this.bind(button, command, true);
+    }
+
+    public Zoystick bind(String button, Command command, boolean on) {
+        return this.bind(this.key_map.get(button), command, on);
+    }
+
+    public Zoystick bind(String button, Command command) {
+        return this.bind(button, command, true);
+    }
+
+    @Override
+    public String key() {
+        return "Zoystick(" + super.getPort() + ")";
     }
 }

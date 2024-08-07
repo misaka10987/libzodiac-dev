@@ -114,10 +114,10 @@ public class Robot extends TimedRobot {
         // CommandScheduler.getInstance().schedule(RobotContainer.swerveDrive);
         // CommandScheduler.getInstance().schedule(RobotContainer.sc);
         var scheduler = CommandScheduler.getInstance();
-        scheduler.schedule(m_bot.chassis.single_joystick_drive(m_bot.drive));
+        scheduler.schedule(m_bot.chassis.drive(m_bot.drive));
         scheduler.run();
-        scheduler.schedule(m_bot.shooter.shoot(m_bot.drive));
-        scheduler.run();
+//        scheduler.schedule(m_bot.shooter.shoot(m_bot.drive));
+//        scheduler.run();
         scheduler.schedule(m_bot.chassis.check_headless(m_bot.drive));
         scheduler.run();
         scheduler.schedule(m_bot.chassis.check_wheel_reset(m_bot.drive));

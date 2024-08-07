@@ -20,9 +20,9 @@ public class Util {
 
     /**
      * Extends the modulo operation to R.
-     * <p>
+     * <br/>
      * The definition here:
-     * <p>
+     * <br/>
      * a and b are congruent modulo c, if and only if (a-b)/c is integer.
      *
      * @return In (-mod,mod), and NaN for NaN and Infinite parameters.
@@ -34,8 +34,8 @@ public class Util {
         if (num < 0) {
             return -mod(-num, mod);
         }
-        var ans = (int) (num / 2 / mod);
-        double res = num - ans * 2 * mod;
+        final var ans = (int) (num / 2 / mod);
+        final var res = num - ans * 2 * mod;
         return res > mod ? res - 2 * mod : res;
     }
 

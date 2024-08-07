@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.libzodiac;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -16,7 +12,7 @@ public abstract class Zwerve extends SubsystemBase implements ZmartDash {
     /**
      * Gyro.
      */
-    public final ZGyro gyro;
+    public final Zensor gyro;
     /**
      * Swerve modules of a rectangular chassis.
      * <p>
@@ -50,7 +46,6 @@ public abstract class Zwerve extends SubsystemBase implements ZmartDash {
      */
     public final Module[] module;
     public boolean headless = false;
-
     /**
      * Modifier timed at the output speed of the chassis.
      */
@@ -63,7 +58,7 @@ public abstract class Zwerve extends SubsystemBase implements ZmartDash {
      * @param gyro    The gyro.
      * @param shape   Shape of the robot, <code>x</code> for length and <code>y</code> for width.
      */
-    public Zwerve(Module[] modules, ZGyro gyro, Vec2D shape) {
+    public Zwerve(Module[] modules, Zensor gyro, Vec2D shape) {
         this.module = modules;
         this.gyro = gyro;
         this.shape = shape;
@@ -80,7 +75,7 @@ public abstract class Zwerve extends SubsystemBase implements ZmartDash {
      * Get the absolute current direction of the robot.j
      */
     public double dir_curr() {
-        return this.gyro.yaw();
+        return this.gyro.get("yaw");
     }
 
     /**
@@ -144,17 +139,17 @@ public abstract class Zwerve extends SubsystemBase implements ZmartDash {
      * Kinematics part rewritten using vector calculations.
      */
     public Zwerve go(Vec2D velocity, double omega) {
-        var l = this.shape.x / 2;
-        var w = this.shape.y / 2;
-        var vt = omega;
-        velocity = velocity.rot(this.dir_fix());
+        final var l = this.shape.x / 2;
+        final var w = this.shape.y / 2;
+        final var vt = omega;
+        final var vel = velocity.rot(this.dir_fix());
         Vec2D[] v = {
-                new Vec2D(-l, -w).with_r(vt).add(velocity),
-                new Vec2D(l, -w).with_r(vt).add(velocity),
-                new Vec2D(l, w).with_r(vt).add(velocity),
-                new Vec2D(-l, w).with_r(vt).add(velocity),
+                new Vec2D(-l, -w).with_r(vt).add(vel),
+                new Vec2D(l, -w).with_r(vt).add(vel),
+                new Vec2D(l, w).with_r(vt).add(vel),
+                new Vec2D(-l, w).with_r(vt).add(vel),
         };
-        var max = v[0].max(v[1]).max(v[2]).max(v[3]).r();
+        final var max = v[0].max(v[1]).max(v[2]).max(v[3]).r();
         if (max > 1) for (int i = 0; i < 4; i++) v[i] = v[i].div(max);
         this.module[0].go(v[0].mul(output));
         this.module[1].go(v[1].mul(output));
@@ -166,14 +161,9 @@ public abstract class Zwerve extends SubsystemBase implements ZmartDash {
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
-    }
-
-    /**
-     * Switch headless mode.
-     */
-    public Zwerve headless() {
-        this.headless = !this.headless;
-        return this;
+        this.debug("headless", this.headless);
+        this.debug("dir_fix", this.dir_fix());
+        this.debug("yaw", this.gyro.get("yaw"));
     }
 
     /**
@@ -185,19 +175,24 @@ public abstract class Zwerve extends SubsystemBase implements ZmartDash {
     }
 
     /**
-     * Get the controlling <code>Command</code> for the current instance.
+     * Enable headless mode.
      */
-    public Drive control(Zoystick vel, Zoystick rot) {
-        return new Drive(this, vel, rot);
+    public Zwerve headless() {
+        return this.headless(true);
+    }
+
+    public Zwerve toggle_headless() {
+        this.headless = !this.headless;
+        return this;
     }
 
     public ZCommand drive_forward() {
-        return new ZLambda<>((x) -> x.go(new Vec2D(0.1, 0), 0), this);
+        return new Zambda<>((x) -> x.go(new Vec2D(0.1, 0), 0), this);
     }
 
-    public ZCommand single_joystick_drive(Zoystick zoystick) {
-        return new ZLambda<>((x) -> {
-            var vel = new Vec2D(-zoystick.ly(), -zoystick.lx());
+    public ZCommand drive(Zoystick zoystick) {
+        return new Zambda<>((x) -> {
+            final var vel = new Vec2D(-zoystick.ly(), -zoystick.lx());
             this.debug("vel", vel + "");
             this.debug("rot", zoystick.rx());
             x.go(vel, zoystick.rx());
@@ -205,22 +200,20 @@ public abstract class Zwerve extends SubsystemBase implements ZmartDash {
     }
 
     public ZCommand check_headless(Zoystick zoystick) {
-        return new ZLambda<>((x) -> {
-            if (zoystick.button("X")) {
+        return new Zambda<>((x) -> {
+            if (zoystick.pressed("X")) {
                 this.headless();
             }
             this.debug("x", zoystick.button("X"));
-            this.debug("headless", this.headless);
-            this.debug("gyro", this.gyro.yaw());
         }, this);
     }
 
     public ZCommand check_wheel_reset(Zoystick zoystick) {
-        return new ZLambda<>((x) -> {
-            if (zoystick.button("A")) {
+        return new Zambda<>((x) -> {
+            if (zoystick.pressed("A")) {
                 this.reset();
             }
-            if (zoystick.button("Y")) {
+            if (zoystick.pressed("Y")) {
                 this.module[0].clear();
                 this.module[1].clear();
                 this.module[2].clear();
@@ -264,81 +257,5 @@ public abstract class Zwerve extends SubsystemBase implements ZmartDash {
         Module reset();
 
         Module clear();
-    }
-
-    /**
-     * The driving <code>Command</code> for the chassis.
-     */
-    public static class Drive extends ZCommand {
-
-        /**
-         * The chassis.
-         */
-        private final Zwerve chassis;
-        /**
-         * The joystick that controls translation.
-         */
-        private final Zoystick vel_ctrl;
-
-        /**
-         * The joystick that controls rotation.
-         */
-        private final Zoystick rot_ctrl;
-
-        private boolean inv_vx = false;
-        private boolean inv_vy = false;
-        private boolean inv_rot = false;
-
-        /**
-         * Creates a new Drive.
-         */
-        public Drive(Zwerve chassis, Zoystick vel, Zoystick rot) {
-            // Use addRequirements() here to declare subsystem dependencies.
-            this.chassis = this.require(chassis);
-            this.vel_ctrl = vel;
-            this.rot_ctrl = rot;
-        }
-
-        // Called when the command is initially scheduled.
-        @Override
-        public void initialize() {
-        }
-
-        // Called every time the scheduler runs while the command is scheduled.
-        @Override
-        protected Drive exec() {
-            var v_x = this.vel_ctrl.lx();
-            var v_y = this.vel_ctrl.ly();
-            var omega = this.rot_ctrl.getRawAxis(0);
-            if (this.inv_vx)
-                v_x = -v_x;
-            if (this.inv_vy)
-                v_y = -v_y;
-            if (this.inv_rot)
-                omega = -omega;
-            this.chassis.go(new Vec2D(v_x, v_y), omega);
-            return this;
-        }
-
-        // Called once the command ends or is interrupted.
-        @Override
-        public void end(boolean interrupted) {
-        }
-
-        // Returns true when the command should end.
-        @Override
-        public boolean isFinished() {
-            return false;
-        }
-
-        /**
-         * Configure whether to invert the output of the chassis.
-         */
-        public Drive inv(boolean v_x, boolean v_y, boolean rot) {
-            this.inv_vx = v_x;
-            this.inv_vy = v_y;
-            this.inv_rot = rot;
-            return this;
-        }
     }
 }

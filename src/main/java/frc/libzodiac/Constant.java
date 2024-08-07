@@ -5,13 +5,13 @@ public final class Constant {
     /**
      * How many radians a raw <code>TalonSRX</code>'s unit is equal to.
      */
-    public static double TALONSRX_ENCODER_UNIT = 1/(2 * Math.PI / 4096); //maybe test later
+    public static final double TALONSRX_ENCODER_UNIT = 1/(2 * Math.PI / 4096); //maybe test later
 
     /**
      * Falcon uses rotation as its position unit.
      */
-    public static double FALCON_POSITION_UNIT = 2 * Math.PI;
+    public static final double FALCON_POSITION_UNIT = 2 * Math.PI;
 
-    public static double SWERVE_MOTOR_WHEEL_RATIO = 4;
+    public static final double SWERVE_MOTOR_WHEEL_RATIO = 4;
     //i guess it was 4. calculate the real one later
 }

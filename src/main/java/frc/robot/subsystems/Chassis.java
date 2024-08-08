@@ -72,7 +72,8 @@ public class Chassis extends Zwerve {
 
     @Override
     protected Zwerve opt_init() {
-        super.gyro.reset("yaw");
+        gyro.init();
+        gyro.reset("yaw");
         return this;
     }
 }

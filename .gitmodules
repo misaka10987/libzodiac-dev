@@ -1,3 +1,4 @@
-[submodule "src/main/java/frc/libzodiac"]
+[submodule "libzodiac"]
 	path = src/main/java/frc/libzodiac
 	url = git@github.com:ZodiacEFZ/libzodiac.git
+	branch = main

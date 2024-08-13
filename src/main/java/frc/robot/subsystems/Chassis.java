@@ -1,12 +1,9 @@
 package frc.robot.subsystems;
 
-import frc.libzodiac.ZEncoder;
 import frc.libzodiac.Zwerve;
 import frc.libzodiac.hardware.Falcon;
 import frc.libzodiac.hardware.Pigeon;
-import frc.libzodiac.hardware.TalonSRXEncoder;
 import frc.libzodiac.hardware.group.FalconSwerve;
-import frc.libzodiac.hardware.group.FalconWithEncoder;
 import frc.libzodiac.util.PIDProfile;
 import frc.libzodiac.util.Vec2D;
 
@@ -19,32 +16,18 @@ public class Chassis extends Zwerve {
             new Falcon(5)
     };
 
-    public static final Falcon.Servo[] servo = {
+    public static final Falcon.Servo[] angle = {
             new Falcon.Servo(3),
             new Falcon.Servo(2),
             new Falcon.Servo(12),
             new Falcon.Servo(6),
     };
 
-    public static final ZEncoder[] encoder = {
-            new TalonSRXEncoder(1),
-            new TalonSRXEncoder(4),
-            new TalonSRXEncoder(7),
-            new TalonSRXEncoder(9),
-    };
-
-    public static final FalconWithEncoder[] angle = {
-            new FalconWithEncoder(servo[0], encoder[0]),
-            new FalconWithEncoder(servo[1], encoder[1]),
-            new FalconWithEncoder(servo[2], encoder[2]),
-            new FalconWithEncoder(servo[3], encoder[3]),
-    };
-
     private static final FalconSwerve[] mods = {
-            new FalconSwerve(speed[0], angle[0], new Vec2D(1, 1).mul(0.25)),
-            new FalconSwerve(speed[1], angle[1], new Vec2D(1, -1).mul(0.25)),
-            new FalconSwerve(speed[2], angle[2], new Vec2D(-1, 1).mul(0.25)),
-            new FalconSwerve(speed[3], angle[3], new Vec2D(1, -1).mul(0.25)),
+            new FalconSwerve(speed[0], angle[0]),
+            new FalconSwerve(speed[1], angle[1]),
+            new FalconSwerve(speed[2], angle[2]),
+            new FalconSwerve(speed[3], angle[3]),
     };
 
     private static final Pigeon gyro = new Pigeon(0);

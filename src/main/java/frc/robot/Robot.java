@@ -52,9 +52,9 @@ public class Robot extends TimedRobot {
         // and running subsystem periodic() methods. This must be called from the
         // robot's periodic
         // block in order for anything in the Command-based framework to work.
-//        var scheduler = CommandScheduler.getInstance();
-//        scheduler.schedule(m_bot.chassis.drive_forward());
-//        scheduler.run();
+        // var scheduler = CommandScheduler.getInstance();
+        // scheduler.schedule(m_bot.chassis.drive_forward());
+        // scheduler.run();
     }
 
     /**
@@ -103,7 +103,6 @@ public class Robot extends TimedRobot {
         // RobotContainer.getTeleopShooterCommand().schedule();
         // if (RobotContainer.getTeleopIntakeCommand() != null)
         // RobotContainer.getTeleopIntakeCommand().schedule();
-        m_bot.chassis.reset();
     }
 
     /**
@@ -114,27 +113,14 @@ public class Robot extends TimedRobot {
         // CommandScheduler.getInstance().schedule(RobotContainer.swerveDrive);
         // CommandScheduler.getInstance().schedule(RobotContainer.sc);
         var scheduler = CommandScheduler.getInstance();
-        scheduler.schedule(m_bot.chassis.drive(m_bot.drive));
+        scheduler.schedule(m_bot.drive);
         scheduler.run();
-//        scheduler.schedule(m_bot.shooter.shoot(m_bot.drive));
-//        scheduler.run();
-        scheduler.schedule(m_bot.chassis.check_headless(m_bot.drive));
-        scheduler.run();
-        scheduler.schedule(m_bot.chassis.check_wheel_reset(m_bot.drive));
-        scheduler.run();
-//        scheduler.schedule(m_bot.chassis_ctrl());
-//        scheduler.schedule(new RunCommand(() -> {
-//            m_bot.shooter1.set(0.1);
-//            m_bot.shooter2.set(0.1);
-//        }));
-//        scheduler.run();
     }
 
     @Override
     public void testInit() {
         // Cancels all running commands at the start of test mode.
         CommandScheduler.getInstance().cancelAll();
-        m_bot.chassis.clear();
     }
 
     /**
@@ -142,9 +128,6 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void testPeriodic() {
-        var scheduler = CommandScheduler.getInstance();
-        scheduler.schedule(m_bot.chassis.drive_forward());
-        scheduler.run();
     }
 
     /**

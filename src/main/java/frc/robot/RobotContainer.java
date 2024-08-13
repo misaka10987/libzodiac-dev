@@ -4,11 +4,9 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.libzodiac.Zambda;
-import frc.libzodiac.Zoystick;
-import frc.libzodiac.Zwerve;
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.libzodiac.ui.Axis;
+import frc.libzodiac.ui.Xbox;
 import frc.robot.subsystems.Chassis;
 
 /**
@@ -24,43 +22,27 @@ public class RobotContainer {
 
     public Chassis chassis = new Chassis();
 
-    public Zoystick drive = new Zoystick(0)
-            .map(1, "A")
-            .map(2, "B")
-            .map(3, "X")
-            .map(4, "Y")
-            .bind("X", new Zambda<>(Zwerve::toggle_headless, chassis))
-            .set_filter(Zoystick.default_filter(0.08));
+    public Xbox xbox = new Xbox(0);
+
+    public Command drive = chassis.drive(
+            xbox.lx()
+                    .threshold(.01)
+                    .map(Axis.QUAD_FILTER),
+            xbox.ly()
+                    .threshold(.01)
+                    .map(Axis.QUAD_FILTER),
+            xbox.rx()
+                    .threshold(.01));
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-        // Configure the trigger bindings
-        configureBindings();
     }
 
     public RobotContainer init() {
         chassis.init();
-        chassis.reset();
         return this;
-    }
-
-    /**
-     * Use this method to define your trigger->command mappings. Triggers can be
-     * created via the
-     * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
-     * an arbitrary
-     * predicate, or via the named factories in {@link
-     * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
-     * {@link
-     * CommandXboxController
-     * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-     * PS4} controllers or
-     * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-     * joysticks}.
-     */
-    private void configureBindings() {
     }
 
 }

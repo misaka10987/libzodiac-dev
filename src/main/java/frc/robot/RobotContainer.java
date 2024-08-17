@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.libzodiac.Zambda;
 import frc.libzodiac.ui.Axis;
 import frc.libzodiac.ui.Xbox;
 import frc.robot.subsystems.Chassis;
@@ -25,19 +26,28 @@ public class RobotContainer {
     public Xbox xbox = new Xbox(0);
 
     public Command drive = chassis.drive(
-            xbox.lx()
-                    .threshold(.01)
-                    .map(Axis.QUAD_FILTER),
             xbox.ly()
-                    .threshold(.01)
-                    .map(Axis.QUAD_FILTER),
+                    .inverted()
+                    .map(Axis.QUAD_FILTER)
+                    .threshold(.1),
+
+            xbox.lx()
+                    .inverted()
+                    .map(Axis.QUAD_FILTER)
+                    .threshold(.1),
+
             xbox.rx()
-                    .threshold(.01));
+                    .inverted()
+                    .threshold(.1));
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
+        this.xbox.x().on_press(new Zambda(this.chassis, () -> {
+            this.chassis.mod_reset();
+            // this.xbox.rumble();
+        }));
     }
 
     public RobotContainer init() {

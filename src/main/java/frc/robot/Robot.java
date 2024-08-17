@@ -113,6 +113,7 @@ public class Robot extends TimedRobot {
         // CommandScheduler.getInstance().schedule(RobotContainer.swerveDrive);
         // CommandScheduler.getInstance().schedule(RobotContainer.sc);
         var scheduler = CommandScheduler.getInstance();
+        m_bot.chassis.debug("rx", m_bot.xbox.rx().inverted().threshold(.1).get());
         scheduler.schedule(m_bot.drive);
         scheduler.run();
     }

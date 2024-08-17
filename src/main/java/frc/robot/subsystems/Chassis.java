@@ -10,17 +10,17 @@ import frc.libzodiac.util.Vec2D;
 public class Chassis extends Zwerve {
 
     public static final Falcon[] speed = {
-            new Falcon(10),
-            new Falcon(11),
-            new Falcon(8),
-            new Falcon(5)
+            new Falcon(5),
+            new Falcon(6),
+            new Falcon(7),
+            new Falcon(8)
     };
 
     public static final Falcon.Servo[] angle = {
-            new Falcon.Servo(3),
+            new Falcon.Servo(1),
             new Falcon.Servo(2),
-            new Falcon.Servo(12),
-            new Falcon.Servo(6),
+            new Falcon.Servo(3),
+            new Falcon.Servo(4),
     };
 
     private static final FalconSwerve[] mods = {
@@ -37,8 +37,12 @@ public class Chassis extends Zwerve {
      */
     public Chassis() {
         super(mods, gyro, new Vec2D(114, 114));
-        final var v = new PIDProfile(0.15, 0, 0);
-        final var a = new PIDProfile(0.05, 0.001, 0);
+        super.output = 10;
+        final var v = new PIDProfile(0.1, 5, 0);
+        final var a = new PIDProfile(0.3, 0.3, 0);
+        // mods[0].angle_motor.inverted = true;
+        // mods[1].angle_motor.inverted = true;
+        // mods[2].angle_motor.inverted = true;
         // Mod I.
         mods[0].speed_motor.set_pid(v);
         mods[0].angle_motor.set_pid(a);

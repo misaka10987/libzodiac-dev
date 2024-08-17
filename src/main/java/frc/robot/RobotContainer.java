@@ -48,6 +48,7 @@ public class RobotContainer {
             this.chassis.mod_reset();
             // this.xbox.rumble();
         }));
+        this.xbox.a().on_press(new Zambda(this.chassis, () -> this.chassis.toggle_headless()));
     }
 
     public RobotContainer init() {

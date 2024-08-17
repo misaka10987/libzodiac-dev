@@ -103,6 +103,7 @@ public class Robot extends TimedRobot {
         // RobotContainer.getTeleopShooterCommand().schedule();
         // if (RobotContainer.getTeleopIntakeCommand() != null)
         // RobotContainer.getTeleopIntakeCommand().schedule();
+        CommandScheduler.getInstance().cancelAll();
     }
 
     /**
@@ -129,6 +130,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void testPeriodic() {
+        CommandScheduler.getInstance().run();
     }
 
     /**

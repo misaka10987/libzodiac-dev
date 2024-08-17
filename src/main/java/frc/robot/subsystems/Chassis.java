@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import frc.libzodiac.Zwerve;
 import frc.libzodiac.hardware.Falcon;
+import frc.libzodiac.hardware.MagEncoder;
 import frc.libzodiac.hardware.Pigeon;
 import frc.libzodiac.hardware.group.FalconSwerve;
 import frc.libzodiac.util.PIDProfile;
@@ -11,23 +12,30 @@ public class Chassis extends Zwerve {
 
     public static final Falcon[] speed = {
             new Falcon(5),
-            new Falcon(6),
-            new Falcon(7),
+            new Falcon(6).invert(),
+            new Falcon(7).invert(),
             new Falcon(8)
     };
 
     public static final Falcon.Servo[] angle = {
-            new Falcon.Servo(1),
-            new Falcon.Servo(2),
-            new Falcon.Servo(3),
+            new Falcon.Servo(1).invert(),
+            new Falcon.Servo(2).invert(),
+            new Falcon.Servo(3).invert(),
             new Falcon.Servo(4),
     };
 
+    public static final MagEncoder[] encoder = {
+            new MagEncoder(9),
+            new MagEncoder(10),
+            new MagEncoder(11),
+            new MagEncoder(12),
+    };
+
     private static final FalconSwerve[] mods = {
-            new FalconSwerve(speed[0], angle[0]),
-            new FalconSwerve(speed[1], angle[1]),
-            new FalconSwerve(speed[2], angle[2]),
-            new FalconSwerve(speed[3], angle[3]),
+            new FalconSwerve(speed[0], angle[0], encoder[0]),
+            new FalconSwerve(speed[1], angle[1], encoder[1]),
+            new FalconSwerve(speed[2], angle[2], encoder[2]),
+            new FalconSwerve(speed[3], angle[3], encoder[3]),
     };
 
     private static final Pigeon gyro = new Pigeon(0);
@@ -37,9 +45,9 @@ public class Chassis extends Zwerve {
      */
     public Chassis() {
         super(mods, gyro, new Vec2D(114, 114));
-        super.output = 10;
+        super.output = 200;
         final var v = new PIDProfile(0.1, 5, 0);
-        final var a = new PIDProfile(0.3, 0.3, 0);
+        final var a = new PIDProfile(0.3, 0, 0);
         // mods[0].angle_motor.inverted = true;
         // mods[1].angle_motor.inverted = true;
         // mods[2].angle_motor.inverted = true;
@@ -61,6 +69,10 @@ public class Chassis extends Zwerve {
     protected Zwerve opt_init() {
         gyro.init();
         gyro.reset("yaw");
+        encoder[0].set_zero(3607); // 3582
+        encoder[1].set_zero(480); // 480
+        encoder[2].set_zero(192); // 211
+        encoder[3].set_zero(1853); // 0?????
         return this;
     }
 }

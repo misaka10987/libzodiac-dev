@@ -44,7 +44,7 @@ public class Chassis extends Zwerve {
      * Creates a new Chassis.
      */
     public Chassis() {
-        super(mods, gyro, new Vec2D(114, 114));
+        super(mods, gyro.yaw(), new Vec2D(114, 114));
         super.output = 200;
         final var v = new PIDProfile(0.1, 5, 0);
         final var a = new PIDProfile(0.3, 0, 0);
@@ -68,7 +68,6 @@ public class Chassis extends Zwerve {
     @Override
     protected Zwerve opt_init() {
         gyro.init();
-        gyro.reset("yaw");
         encoder[0].set_zero(3607); // 3582
         encoder[1].set_zero(480); // 480
         encoder[2].set_zero(192); // 211
